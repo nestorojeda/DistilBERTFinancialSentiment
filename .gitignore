@@ -1,2 +1,4 @@
 .venv
 data
+wandb
+fine-tuned-distilbert-base-uncased
