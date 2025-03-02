@@ -2,3 +2,4 @@
 data
 wandb
 fine-tuned-distilbert-base-uncased
+.DS_Store
