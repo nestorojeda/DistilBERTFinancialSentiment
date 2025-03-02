@@ -6,7 +6,7 @@ This project is built with the help of Hugging Face's Transformers library.
 ## Hugging Face Integration
 
 This project is available on Hugging Face:
-[Fine tuned distilbert](https://huggingface.co/nojedag/fine-tuned-distilbert-base-uncased)
+[Financial Sentiment Analysis distilbert](https://huggingface.co/nojedag/financial-sentiment-analysis-distilbert-base-uncased)
 
 ## About
 
