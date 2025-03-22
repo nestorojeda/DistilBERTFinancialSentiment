@@ -3,3 +3,5 @@ data
 wandb
 fine-tuned-distilbert-base-uncased
 .DS_Store
+__pycache__
+*.pyc
