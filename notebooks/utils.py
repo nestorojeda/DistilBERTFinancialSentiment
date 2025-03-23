@@ -24,3 +24,9 @@ def compute_metrics(eval_pred):
     accuracy = load_accuracy.compute(predictions=predictions, references=labels)
     f1 = load_f1.compute(predictions=predictions, references=labels, average="weighted")
     return {"accuracy": accuracy, "f1score": f1}
+
+def get_output_dir(model_name):
+    return f'.././models/{model_name}'
+
+def get_dataset_dir(dataset_name):
+    return f'.././datasets/{dataset_name}.csv'
