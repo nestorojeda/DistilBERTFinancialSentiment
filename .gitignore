@@ -1,9 +1,5 @@
 .venv
 wandb
-fine-tuned-distilbert-base-uncased
 .DS_Store
 __pycache__
 *.pyc
-distilbert-base-uncased_financial_fr_gr
-distilroberta-finetuned-financial-news-sentiment-analysis_fr_gr
-finbert_fr_gr
