@@ -11,7 +11,7 @@ def transform_labels(example):
     
     # Get the sentiment value using the map with a default
     # This handles both cases in one step and makes the code more maintainable
-    return {'labels': sentiment_map.get(example['Sentiment'].lower(), 0)}
+    return {'labels': sentiment_map.get(example['sentiment'].lower(), 0)}
 
 def compute_metrics(eval_pred):
     # load the metrics to use
