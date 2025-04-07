@@ -28,5 +28,7 @@ def compute_metrics(eval_pred):
 def get_output_dir(model_name):
     return f'.././models/{model_name}'
 
-def get_dataset_dir(dataset_name, ext='csv'):
+def get_dataset_dir(dataset_name, ext='csv', only_dir=False):
+    if only_dir:
+        return f'.././datasets/{dataset_name}'
     return f'.././datasets/{dataset_name}.{ext}'
