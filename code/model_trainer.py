@@ -12,8 +12,8 @@ import numpy as np
 # Assuming utils.py exists and contains get_output_dir
 # If not, you might need to adjust the import or definition
 from utils import get_output_dir 
-from code.data_manager import get_tokenized_lang_dataset # Import from the new module
-from code.evaluation import compute_metrics # Import from the new module
+from data_manager import get_tokenized_lang_dataset # Import from the new module
+from evaluation import compute_metrics # Import from the new module
 
 class CustomTrainer(Trainer):
     """Custom Trainer that uses weighted CrossEntropyLoss."""
@@ -22,7 +22,7 @@ class CustomTrainer(Trainer):
         # Ensure weight_tensor is moved to the correct device during loss calculation
         self.weight_tensor = weight_tensor
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.get("logits")

@@ -8,10 +8,10 @@ from torch.optim import Adam
 from torch.cuda.amp import GradScaler
 
 # Local imports from the refactored modules
-from code.data_manager import transform_labels, tokenize_data
-from code.evaluation import evaluate
-from code.model_trainer import fine_tune_language
-from code.distillation import DistillationTrainer
+from data_manager import transform_labels, tokenize_data
+from evaluation import evaluate
+from model_trainer import fine_tune_language
+from distillation import DistillationTrainer
 from utils import get_output_dir # Assuming utils.py and get_output_dir exist
 
 # %% Configuration
