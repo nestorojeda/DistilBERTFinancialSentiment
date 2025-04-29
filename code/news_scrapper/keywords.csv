@@ -1,0 +1,29 @@
+Category,English,Spanish,German,French
+Positive,Profit,Ganancia,Gewinn,Profit
+Positive,Growth,Crecimiento,Wachstum,Croissance
+Positive,Increase,Aumento,Anstieg,Augmentation
+Positive,Bullish,Alcista,Hausse,Haussier
+Positive,Record high,Récord máximo,Rekordhoch,Niveau record
+Positive,Upturn,Repunte,Aufschwung,Reprise
+Positive,Recovery,Recuperación,Erholung,Reprise
+Positive,Strong,Fuerte,Stark,Fort
+Positive,Outperform,Superar,Übertreffen,Surperformer
+Negative,Loss,Pérdida,Verlust,Perte
+Negative,Decline,Caída,Rückgang,Déclin
+Negative,Drop,Caída,Einbruch,Chute
+Negative,Bearish,Bajista,Baisse,Baissier
+Negative,Crisis,Crisis,Krise,Crise
+Negative,Recession,Recesión,Rezession,Récession
+Negative,Downturn,Descenso,Abschwung,Déclin
+Negative,Weak,Débil,Schwach,Faible
+Negative,Underperform,Rendimiento inferior,Unterperformen,Sous-performer
+Neutral,Stock,Acción,Aktie,Action
+Neutral,Bond,Bono,Anleihe,Obligation
+Neutral,Market,Mercado,Markt,Marché
+Neutral,Index,Índice,Index,Indice
+Neutral,Economy,Economía,Wirtschaft,Économie
+Neutral,Inflation,Inflación,Inflation,Inflation
+Neutral,Interest rate,Tasa de interés,Zinssatz,Taux d'intérêt
+Neutral,Forecast,Pronóstico,Prognose,Prévision
+Neutral,Report,Informe,Bericht,Rapport
+Neutral,Investment,Inversión,Investition,Investissement
