@@ -18,6 +18,11 @@ load_dotenv()
 # Get the API key
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
+# Get the base path for storing the news
+BASE_PATH = os.getenv("BASE_PATH")
+if not BASE_PATH:
+    raise ValueError("BASE_PATH not found in .env file")
+
 if not NEWS_API_KEY:
     raise ValueError("NEWS_API_KEY not found in .env file")
 
@@ -87,7 +92,7 @@ def save_to_csv(articles, language):
     today = datetime.datetime.now().strftime("%Y%m%d")
     
     # Create directory if it doesn't exist
-    output_dir = Path("../../data/news")
+    output_dir = Path(BASE_PATH + "/data/news")
     output_dir.mkdir(exist_ok=True, parents=True)
     
     # Save to CSV
