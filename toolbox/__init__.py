@@ -8,4 +8,4 @@ from .utils import (
     get_dataset_dir
 )
 
-from .ml import LRFinder
+from .logger import Logger

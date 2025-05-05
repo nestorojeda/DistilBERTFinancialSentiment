@@ -1,3 +1,5 @@
+import os
+import sys
 import torch
 from transformers import (
     Trainer,
@@ -7,13 +9,15 @@ from transformers import (
     DataCollatorWithPadding
 )
 from datasets import DatasetDict
-import numpy as np
-
-# Assuming utils.py exists and contains get_output_dir
-# If not, you might need to adjust the import or definition
-from toolbox.utils import get_output_dir
 from data_manager import get_tokenized_lang_dataset # Import from the new module
 from evaluation import compute_metrics # Import from the new module
+
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+    print(f"Added {module_path} to sys.path")
+
+from toolbox.utils import get_output_dir
 
 class CustomTrainer(Trainer):
     """Custom Trainer that uses weighted CrossEntropyLoss."""
@@ -118,7 +122,7 @@ def fine_tune_language(model_name: str, dataset: DatasetDict, lang: str):
 
     # Define class weights (consider calculating these based on data distribution)
     # Example: Using predefined weights
-    class_weights = torch.tensor([1.0, 2.0, 3.0]) # Adjust weights as needed
+    class_weights = torch.tensor([2.2643, 0.6222, 1.0515]) # Adjust weights as needed
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
     trainer = CustomTrainer(

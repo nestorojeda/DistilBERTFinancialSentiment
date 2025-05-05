@@ -1,10 +1,14 @@
+import os
+import sys
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from transformers import AutoModelForSequenceClassification
-import os
-from logger import Logger  # Updated import from dedicated logger module
+
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+    print(f"Added {module_path} to sys.path")
+from toolbox.logger import Logger  # Updated import from dedicated logger module
 
 class DistillationTrainer:
     """Handles the knowledge distillation training process."""
