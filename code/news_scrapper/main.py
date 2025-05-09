@@ -38,7 +38,7 @@ LANGUAGES = {
 }
 
 # Sentiment categories
-SENTIMENTS = ["Positive", "Neutral", "Negative"]
+SENTIMENTS = ["positive", "neutral", "negative"]
 
 def load_keywords_by_sentiment():
     """
@@ -54,7 +54,7 @@ def load_keywords_by_sentiment():
     keywords_df = pd.read_csv(keywords_path)
     
     # Initialize the keywords dictionary
-    keywords = {lang: {"Positive": [], "Negative": [], "Neutral": []} for lang in LANGUAGES.keys()}
+    keywords = {lang: {"positive": [], "negative": [], "neutral": []} for lang in LANGUAGES.keys()}
     
     # Map language codes to column names in the CSV
     lang_columns = {
@@ -80,7 +80,7 @@ def get_search_query_for_sentiment(language, keywords, sentiment):
     Args:
         language (str): Language code ('es', 'fr', 'de')
         keywords (dict): Dictionary containing keywords for each language and sentiment
-        sentiment (str): Sentiment category ('Positive', 'Neutral', 'Negative')
+        sentiment (str): Sentiment category ("positive", "neutral", "negative")
         
     Returns:
         str: Search query string
@@ -102,7 +102,7 @@ def fetch_financial_news_by_sentiment(language, keywords, sentiment, num_article
     Args:
         language (str): Language code ('es', 'fr', 'de')
         keywords (dict): Dictionary containing keywords for each language and sentiment
-        sentiment (str): Sentiment category ('Positive', 'Neutral', 'Negative')
+        sentiment (str): Sentiment category ("positive", "neutral", "negative")
         num_articles (int): Number of articles to fetch
         
     Returns:
@@ -158,17 +158,16 @@ def save_news_by_sentiment_to_csv(all_articles, language):
     today = datetime.datetime.now().strftime("%Y%m%d")
     
     # Create output directory if it doesn't exist
-    output_dir = Path(BASE_PATH + "/data/sentiment")
+    output_dir = Path(BASE_PATH + "/data/news")
     output_dir.mkdir(exist_ok=True, parents=True)
     
     # Create a DataFrame with only headline, keyword sentiment, and publish date
     result_data = []
     for article in all_articles:
         # Include all articles regardless of whether there's a matching keyword
-        keyword_text = article['matching_keyword'] if article['matching_keyword'] else "No specific keyword"
         result_data.append({
             'headline': article['title'],
-            'keyword_sentiment': f"{keyword_text} ({article['sentiment']})",
+            'sentiment': article['sentiment'],
             'publish_date': article['publishedAt']
         })
     
@@ -176,7 +175,7 @@ def save_news_by_sentiment_to_csv(all_articles, language):
     result_df = pd.DataFrame(result_data)
     
     # Save to CSV
-    output_file = output_dir / f"sentiment_analysis_{language}_{today}.csv"
+    output_file = output_dir / f"news_{language}_{today}.csv"
     
     if not result_df.empty:
         result_df.to_csv(output_file, index=False)
