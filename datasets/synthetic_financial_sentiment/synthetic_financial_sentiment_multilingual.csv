@@ -1,288 +1,288 @@
-sentiment,lang,sentence
-positive,es,Las acciones de Sage Group aumentaron casi un 20% tras anunciar un programa de recompra de acciones de £400 millones.
-positive,fr,Les actions de Sage Group ont augmenté de près de 20% après l'annonce d'un programme de rachat d'actions de 400 millions de livres sterling.
-positive,de,"Die Aktien der Sage Group stiegen um fast 20%, nachdem ein Aktienrückkaufprogramm in Höhe von 400 Millionen Pfund angekündigt wurde."
-positive,es,DiscoverIE ha logrado resultados positivos gracias a su estrategia de adquisiciones en serie.
-positive,fr,DiscoverIE a obtenu des résultats positifs grâce à sa stratégie d'acquisitions en série.
-positive,de,DiscoverIE erzielte positive Ergebnisse durch seine Strategie der Serienakquisitionen.
-negative,es,La moral de los inversores de la zona euro cayó drásticamente en abril debido a los nuevos aranceles impuestos por el presidente Trump.
-negative,fr,Le moral des investisseurs de la zone euro a chuté en avril en raison des nouveaux tarifs imposés par le président Trump.
-negative,de,"Die Stimmung der Investoren in der Eurozone fiel im April stark aufgrund der neuen Zölle, die von Präsident Trump verhängt wurden."
-negative,es,Los mercados financieros globales experimentaron una gran agitación tras el anuncio de aranceles generalizados por parte del presidente Trump.
-negative,fr,Les marchés financiers mondiaux ont connu une grande agitation après l'annonce par le président Trump de tarifs généralisés.
-negative,de,Die globalen Finanzmärkte erlebten große Turbulenzen nach der Ankündigung umfassender Zölle durch Präsident Trump.
-neutral,es,"La Reserva Federal mantuvo las tasas de interés sin cambios en su reunión de marzo, señalando una mayor incertidumbre económica."
-neutral,fr,"La Réserve fédérale a maintenu les taux d'intérêt inchangés lors de sa réunion de mars, signalant une incertitude économique accrue."
-neutral,de,Die Federal Reserve hielt die Zinssätze bei ihrer März-Sitzung unverändert und wies auf eine erhöhte wirtschaftliche Unsicherheit hin.
-neutral,es,"El índice de volatilidad VIX, conocido como el 'indicador de miedo' de Wall Street, alcanzó su nivel más alto desde agosto."
-neutral,fr,"L'indice de volatilité VIX, connu comme le 'baromètre de la peur' de Wall Street, a atteint son niveau le plus élevé depuis août."
-neutral,de,"Der Volatilitätsindex VIX, bekannt als Wall Streets 'Angstindikator', erreichte seinen höchsten Stand seit August."
-negative,es,Las acciones bancarias globales cayeron un 8% debido a los temores de recesión tras los nuevos aranceles impuestos por el presidente Trump.
-negative,fr,Les actions bancaires mondiales ont chuté de 8% en raison des craintes de récession après les nouveaux tarifs imposés par le président Trump.
-negative,de,Die globalen Bankaktien fielen um 8% aufgrund von Rezessionsängsten nach den neuen Zöllen von Präsident Trump.
-negative,es,El índice Nasdaq entró en territorio bajista después de una caída del 6% en un solo día.
-negative,fr,Le Nasdaq est entré en territoire baissier après une chute de 6% en une seule journée.
-negative,de,Der Nasdaq geriet nach einem Rückgang von 6% an einem einzigen Tag in den Bärenmarkt.
-negative,es,J.P.Morgan aumentó las probabilidades de una recesión global al 60% debido a las tensiones comerciales.
-negative,fr,J.P.Morgan a augmenté les probabilités d'une récession mondiale à 60% en raison des tensions commerciales.
-negative,de,J.P.Morgan erhöhte die Wahrscheinlichkeit einer globalen Rezession auf 60% aufgrund der Handelskonflikte.
-negative,es,La confianza del consumidor en EE.UU. cayó un 11% en marzo debido a la ansiedad por la inflación.
-negative,fr,La confiance des consommateurs aux États-Unis a chuté de 11% en mars en raison de l'anxiété liée à l'inflation.
-negative,de,Das Verbrauchervertrauen in den USA fiel im März um 11% aufgrund von Inflationsängsten.
-negative,es,"El índice S&P 500 cayó un 7,5% en el primer trimestre de 2025 tras la imposición de aranceles por parte del presidente Trump."
-negative,fr,"L'indice S&P 500 a chuté de 7,5% au premier trimestre 2025 après l'imposition de tarifs par le président Trump."
-negative,de,"Der S&P 500 Index fiel im ersten Quartal 2025 um 7,5% nach der Einführung von Zöllen durch Präsident Trump."
-negative,es,"La moral de los inversores cayó drásticamente, con un 45% esperando que los precios de las acciones disminuyan."
-negative,fr,"Le moral des investisseurs a chuté drastiquement, avec 45% s'attendant à une baisse des prix des actions."
-negative,de,"Die Stimmung der Investoren sank drastisch, wobei 45% einen Rückgang der Aktienkurse erwarten."
-negative,es,El índice de volatilidad VIX alcanzó su nivel más alto desde agosto debido a la incertidumbre del mercado.
-negative,fr,L'indice de volatilité VIX a atteint son niveau le plus élevé depuis août en raison de l'incertitude du marché.
-negative,de,Der Volatilitätsindex VIX erreichte aufgrund der Marktunsicherheit seinen höchsten Stand seit August.
-negative,es,El mercado de valores experimentó su peor día desde 2020 tras la imposición de nuevos aranceles.
-negative,fr,Le marché boursier a connu sa pire journée depuis 2020 après l'imposition de nouveaux tarifs.
-negative,de,Der Aktienmarkt erlebte seinen schlimmsten Tag seit 2020 nach der Einführung neuer Zölle.
-negative,es,Las acciones de tecnología cayeron significativamente debido a las preocupaciones sobre la guerra comercial.
-negative,fr,Les actions technologiques ont chuté de manière significative en raison des inquiétudes concernant la guerre commerciale.
-negative,de,Technologieaktien fielen erheblich aufgrund von Bedenken hinsichtlich des Handelskriegs.
-negative,es,"El rendimiento de los bonos del Tesoro de EE.UU. cayó al 2,5% en medio de la huida hacia activos seguros."
-negative,fr,"Le rendement des bons du Trésor américain est tombé à 2,5% en raison de la fuite vers des actifs sûrs."
-negative,de,"Die Rendite der US-Staatsanleihen fiel auf 2,5% aufgrund der Flucht in sichere Anlagen."
-negative,es,El precio del petróleo cayó a mínimos de cuatro años debido a las preocupaciones sobre la demanda global.
-negative,fr,Le prix du pétrole est tombé à son plus bas niveau depuis quatre ans en raison des inquiétudes concernant la demande mondiale.
-negative,de,Der Ölpreis fiel auf ein Vierjahrestief aufgrund von Bedenken hinsichtlich der globalen Nachfrage.
-negative,es,El oro subió un 3% ya que los inversores buscaron refugio en activos seguros.
-negative,fr,L'or a augmenté de 3% alors que les investisseurs recherchaient des valeurs refuges.
-negative,de,"Gold stieg um 3%, da Investoren sichere Anlagen suchten."
-negative,es,"El índice de gestores de compras manufactureras cayó a 48, indicando contracción en el sector."
-negative,fr,"L'indice des directeurs d'achat manufacturiers est tombé à 48, indiquant une contraction du secteur."
-negative,de,Der Einkaufsmanagerindex für das verarbeitende Gewerbe fiel auf 48 und signalisiert eine Schrumpfung des Sektors.
-negative,es,"Las solicitudes de desempleo aumentaron en 20,000 la semana pasada, señalando debilidad en el mercado laboral."
-negative,fr,"Les demandes d'allocations chômage ont augmenté de 20 000 la semaine dernière, signalant une faiblesse du marché du travail."
-negative,de,Die Arbeitslosenmeldungen stiegen letzte Woche um 20.000 und deuten auf eine Schwäche des Arbeitsmarktes hin.
-negative,es,El índice de confianza empresarial cayó a su nivel más bajo en cinco años debido a la incertidumbre económica.
-negative,fr,L'indice de confiance des entreprises est tombé à son niveau le plus bas depuis cinq ans en raison de l'incertitude économique.
-negative,de,Der Geschäftsklimaindex fiel aufgrund wirtschaftlicher Unsicherheit auf den niedrigsten Stand seit fünf Jahren.
-negative,es,"Las ventas minoristas disminuyeron un 0,5% el mes pasado, reflejando una menor confianza del consumidor."
-negative,fr,"Les ventes au détail ont diminué de 0,5% le mois dernier, reflétant une baisse de la confiance des consommateurs."
-negative,de,"Die Einzelhandelsumsätze sanken im vergangenen Monat um 0,5% und spiegeln ein geringeres Verbrauchervertrauen wider."
-negative,es,"El índice de precios al consumidor aumentó un 0,4% en marzo, avivando los temores de inflación."
-negative,fr,"L'indice des prix à la consommation a augmenté de 0,4% en mars, alimentant les craintes d'inflation."
-negative,de,"Der Verbraucherpreisindex stieg im März um 0,4% und schürte Inflationsängste."
-negative,es,"El mercado inmobiliario mostró signos de enfriamiento, con una caída del 2% en las ventas de viviendas nuevas."
-negative,fr,"Le marché immobilier a montré des signes de ralentissement, avec une baisse de 2% des ventes de logements neufs."
-positive,es,"Las acciones europeas superaron al S&P 500 en el primer trimestre de 2025, impulsadas por valoraciones bajas y estímulos fiscales."
-positive,fr,"Les actions européennes ont surpassé le S&P 500 au premier trimestre 2025, soutenues par des valorisations faibles et des mesures de relance fiscale."
-positive,de,"Europäische Aktien übertrafen den S&P 500 im ersten Quartal 2025, angetrieben durch niedrige Bewertungen und fiskalische Anreize."
-positive,es,"El índice Euro Stoxx 50 aumentó un 11,9% tras las elecciones, reflejando la confianza de los inversores en las reformas europeas."
-positive,fr,"L'indice Euro Stoxx 50 a augmenté de 11,9% après les élections, reflétant la confiance des investisseurs dans les réformes européennes."
-positive,de,"Der Euro Stoxx 50 stieg nach den Wahlen um 11,9%, was das Vertrauen der Investoren in europäische Reformen widerspiegelt."
-positive,es,"El sector bancario europeo mostró resiliencia con sólidos resultados en el cuarto trimestre, impulsando el optimismo para 2025."
-positive,fr,"Le secteur bancaire européen a montré une résilience avec de solides résultats au quatrième trimestre, renforçant l'optimisme pour 2025."
-positive,de,"Der europäische Bankensektor zeigte mit starken Ergebnissen im vierten Quartal Resilienz, was den Optimismus für 2025 stärkt."
-positive,es,"Las pequeñas empresas del Reino Unido expresaron optimismo para 2025, con un 92% esperando crecimiento a pesar de los desafíos económicos."
-positive,fr,"Les petites entreprises britanniques ont exprimé leur optimisme pour 2025, 92% s'attendant à une croissance malgré les défis économiques."
-positive,de,"Kleine Unternehmen im Vereinigten Königreich äußerten Optimismus für 2025, wobei 92% trotz wirtschaftlicher Herausforderungen Wachstum erwarten."
-positive,es,El plan de estímulo económico de Alemania de €500 mil millones busca revitalizar la infraestructura y fortalecer la industria.
-positive,fr,Le plan de relance économique de l'Allemagne de 500 milliards d'euros vise à revitaliser les infrastructures et à renforcer l'industrie.
-positive,de,"Deutschlands Konjunkturpaket von 500 Milliarden Euro zielt darauf ab, die Infrastruktur zu revitalisieren und die Industrie zu stärken."
-positive,es,"La iniciativa ReArm Europe de la UE propone una inversión de €800 mil millones en defensa, estimulando el crecimiento económico."
-positive,fr,"L'initiative ReArm Europe de l'UE propose un investissement de 800 milliards d'euros dans la défense, stimulant la croissance économique."
-positive,de,"Die ReArm Europe-Initiative der EU schlägt eine Investition von 800 Milliarden Euro in die Verteidigung vor, was das Wirtschaftswachstum ankurbelt."
-positive,es,"El índice de sorpresas económicas de Citigroup para la eurozona alcanzó su nivel más alto desde abril de 2024, indicando mejoras económicas."
-positive,fr,"L'indice des surprises économiques de Citigroup pour la zone euro a atteint son niveau le plus élevé depuis avril 2024, indiquant des améliorations économiques."
-positive,de,"Der Economic Surprise Index von Citigroup für die Eurozone erreichte den höchsten Stand seit April 2024, was auf wirtschaftliche Verbesserungen hindeutet."
-positive,es,"La cumbre de IA en París reunió a líderes globales, destacando el compromiso de Europa con la innovación tecnológica."
-positive,fr,"Le sommet sur l'IA à Paris a réuni des leaders mondiaux, soulignant l'engagement de l'Europe envers l'innovation technologique."
-positive,de,Der KI-Gipfel in Paris brachte globale Führungskräfte zusammen und unterstrich Europas Engagement für technologische Innovation.
-positive,es,"La iniciativa InvestAI de la UE movilizará €200 mil millones para inversiones en inteligencia artificial, fortaleciendo el sector tecnológico europeo."
-positive,fr,"L'initiative InvestAI de l'UE mobilisera 200 milliards d'euros pour des investissements dans l'intelligence artificielle, renforçant le secteur technologique européen."
-positive,de,Die InvestAI-Initiative der EU wird 200 Milliarden Euro für Investitionen in künstliche Intelligenz mobilisieren und den europäischen Technologiesektor stärken.
-positive,es,"La Comisión Europea propone eliminar aranceles industriales sobre productos estadounidenses, fomentando el comercio transatlántico."
-positive,fr,"La Commission européenne propose de supprimer les droits de douane industriels sur les produits américains, favorisant le commerce transatlantique."
-positive,de,"Die Europäische Kommission schlägt vor, Industriezölle auf US-Waren zu entfernen, um den transatlantischen Handel zu fördern."
-positive,es,El plan NextGenerationEU de €750 mil millones impulsa la recuperación económica y la transición verde en Europa.
-positive,fr,Le plan NextGenerationEU de 750 milliards d'euros stimule la reprise économique et la transition verte en Europe.
-positive,de,Der 750-Milliarden-Euro-Plan NextGenerationEU fördert die wirtschaftliche Erholung und den grünen Wandel in Europa.
-positive,es,"El crecimiento del PIB de la eurozona se prevé que alcance el 1,6% en 2025, cerrando la brecha con Estados Unidos."
-positive,fr,"La croissance du PIB de la zone euro devrait atteindre 1,6% en 2025, réduisant l'écart avec les États-Unis."
-positive,de,"Das BIP-Wachstum der Eurozone wird für 2025 auf 1,6% prognostiziert, wodurch die Lücke zu den USA geschlossen wird."
-positive,es,"Las inversiones en defensa y tecnología en Europa están atrayendo a inversores globales, impulsando el crecimiento económico."
-positive,fr,"Les investissements dans la défense et la technologie en Europe attirent des investisseurs mondiaux, stimulant la croissance économique."
-positive,de,Investitionen in Verteidigung und Technologie in Europa ziehen globale Investoren an und fördern das Wirtschaftswachstum.
-positive,es,El aumento del gasto en infraestructura en Alemania está creando oportunidades significativas para las empresas de construcción europeas.
-positive,fr,L'augmentation des dépenses en infrastructures en Allemagne crée des opportunités significatives pour les entreprises de construction européennes.
-positive,de,Die erhöhten Infrastrukturausgaben in Deutschland schaffen bedeutende Chancen für europäische Bauunternehmen.
-positive,es,La resiliencia del sector bancario europeo refleja una gestión sólida y una economía en recuperación.
-positive,fr,La résilience du secteur bancaire européen reflète une gestion solide et une économie en reprise.
-positive,de,Die Resilienz des europäischen Bankensektors spiegelt solides Management und eine sich erholende Wirtschaft wider.
-positive,es,"Las reformas fiscales en la UE están mejorando el entorno empresarial, fomentando la inversión y el crecimiento."
-positive,fr,"Les réformes fiscales dans l'UE améliorent l'environnement des affaires, favorisant l'investissement et la croissance."
-positive,de,Steuerreformen in der EU verbessern das Geschäftsumfeld und fördern Investitionen und Wachstum.
-positive,es,"El índice DAX alemán alcanzó un máximo histórico antes de las elecciones federales, reflejando la confianza del mercado en la estabilidad política."
-positive,fr,"L'indice DAX allemand a atteint un niveau record avant les élections fédérales, reflétant la confiance du marché dans la stabilité politique."
-positive,de,"Der deutsche DAX-Index erreichte vor den Bundestagswahlen ein Allzeithoch, was das Vertrauen des Marktes in die politische Stabilität widerspiegelt."
-positive,es,"El sector tecnológico europeo experimentó un crecimiento significativo, con empresas líderes reportando aumentos en ingresos y expansión de mercado."
-positive,fr,"Le secteur technologique européen a connu une croissance significative, avec des entreprises leaders rapportant des augmentations de revenus et une expansion du marché."
-positive,de,"Der europäische Technologiesektor verzeichnete ein erhebliches Wachstum, wobei führende Unternehmen Umsatzsteigerungen und Marktexpansion meldeten."
-positive,es,"Las exportaciones de la eurozona aumentaron un 5% en el primer trimestre de 2025, impulsadas por la demanda creciente en mercados asiáticos."
-positive,fr,"Les exportations de la zone euro ont augmenté de 5% au premier trimestre 2025, stimulées par la demande croissante sur les marchés asiatiques."
-positive,de,"Die Exporte der Eurozone stiegen im ersten Quartal 2025 um 5%, angetrieben durch die steigende Nachfrage auf asiatischen Märkten."
-positive,es,"El desempleo en España cayó al 12%, su nivel más bajo en una década, indicando una recuperación económica sostenida."
-positive,fr,"Le chômage en Espagne est tombé à 12%, son niveau le plus bas en une décennie, indiquant une reprise économique soutenue."
-positive,de,"Die Arbeitslosigkeit in Spanien sank auf 12%, den niedrigsten Stand seit einem Jahrzehnt, was auf eine anhaltende wirtschaftliche Erholung hindeutet."
-positive,es,"La inversión extranjera directa en Francia aumentó un 15% en 2025, reflejando la confianza de los inversores en la economía francesa."
-positive,fr,"Les investissements directs étrangers en France ont augmenté de 15% en 2025, reflétant la confiance des investisseurs dans l'économie française."
-positive,de,"Die ausländischen Direktinvestitionen in Frankreich stiegen 2025 um 15%, was das Vertrauen der Investoren in die französische Wirtschaft widerspiegelt."
-positive,es,"El sector manufacturero italiano registró un crecimiento del 3% en producción, señalando una recuperación en la industria."
-positive,fr,"Le secteur manufacturier italien a enregistré une croissance de 3% de la production, signalant une reprise de l'industrie."
-positive,de,"Der italienische Fertigungssektor verzeichnete ein Produktionswachstum von 3%, was auf eine Erholung der Industrie hindeutet."
-positive,es,"El mercado inmobiliario en los Países Bajos mostró signos de fortalecimiento, con un aumento del 7% en los precios de la vivienda."
-positive,fr,"Le marché immobilier aux Pays-Bas a montré des signes de renforcement, avec une augmentation de 7% des prix de l'immobilier."
-positive,de,"Der Immobilienmarkt in den Niederlanden zeigte Anzeichen einer Stärkung, mit einem Anstieg der Immobilienpreise um 7%."
-positive,es,Las startups de tecnología financiera en Europa recaudaron colectivamente €2 mil millones en financiamiento en el primer trimestre de 2025.
-positive,fr,Les startups de technologie financière en Europe ont collectivement levé 2 milliards d'euros de financement au premier trimestre 2025.
-positive,de,Fintech-Startups in Europa sammelten im ersten Quartal 2025 insgesamt 2 Milliarden Euro an Finanzierungen ein.
-positive,es,"El turismo en Grecia experimentó un aumento del 10% en llegadas internacionales, impulsando la economía local."
-positive,fr,"Le tourisme en Grèce a connu une augmentation de 10% des arrivées internationales, stimulant l'économie locale."
-positive,de,"Der Tourismus in Griechenland verzeichnete einen Anstieg von 10% bei internationalen Ankünften, was die lokale Wirtschaft ankurbelt."
-positive,es,"El mercado de bonos corporativos europeos mostró estabilidad, con rendimientos atractivos que atraen a inversores globales."
-positive,fr,"Le marché des obligations d'entreprises européennes a montré une stabilité, avec des rendements attractifs attirant les investisseurs mondiaux."
-positive,de,"Der europäische Unternehmensanleihemarkt zeigte Stabilität, mit attraktiven Renditen, die globale Investoren anziehen."
-positive,es,"La producción de energía renovable en Escandinavia aumentó un 8%, reforzando la transición hacia fuentes sostenibles."
-positive,fr,"La production d'énergie renouvelable en Scandinavie a augmenté de 8%, renforçant la transition vers des sources durables."
-positive,de,"Die Produktion erneuerbarer Energien in Skandinavien stieg um 8%, was den Übergang zu nachhaltigen Quellen stärkt."
-positive,es,"El índice de confianza del consumidor en Portugal alcanzó su nivel más alto desde 2010, reflejando optimismo económico."
-positive,fr,"L'indice de confiance des consommateurs au Portugal a atteint son niveau le plus élevé depuis 2010, reflétant un optimisme économique."
-neutral,es,"El Banco Central Europeo mantuvo las tasas de interés sin cambios en su reunión de marzo, señalando incertidumbre económica."
-neutral,fr,"La Banque centrale européenne a maintenu les taux d'intérêt inchangés lors de sa réunion de mars, signalant une incertitude économique."
-neutral,de,Die Europäische Zentralbank hielt die Zinssätze bei ihrer März-Sitzung unverändert und wies auf wirtschaftliche Unsicherheit hin.
-neutral,es,"El índice de confianza del consumidor en la eurozona cayó a -14,5 en marzo de 2025, el nivel más bajo en tres meses."
-neutral,fr,"L'indice de confiance des consommateurs dans la zone euro est tombé à -14,5 en mars 2025, son niveau le plus bas en trois mois."
-neutral,de,"Der Verbrauchervertrauensindex in der Eurozone fiel im März 2025 auf -14,5, den niedrigsten Stand seit drei Monaten."
-neutral,es,"El crecimiento del PIB de la eurozona se proyecta en un 0,9% para 2025, según las proyecciones del BCE."
-neutral,fr,"La croissance du PIB de la zone euro est projetée à 0,9% pour 2025, selon les projections de la BCE."
-neutral,de,"Das BIP-Wachstum der Eurozone wird für 2025 auf 0,9% prognostiziert, laut den Projektionen der EZB."
-neutral,es,"El índice STOXX 600 cayó un 5,8% en las operaciones matutinas del 7 de abril de 2025, alcanzando su nivel más bajo en 16 meses."
-neutral,fr,"L'indice STOXX 600 a chuté de 5,8% lors des échanges matinaux du 7 avril 2025, atteignant son niveau le plus bas en 16 mois."
-neutral,de,"Der STOXX 600 Index fiel am Morgen des 7. April 2025 um 5,8% und erreichte den niedrigsten Stand seit 16 Monaten."
-neutral,es,La Comisión Europea está considerando contramedidas por valor de hasta $28 mil millones en respuesta a los aranceles de EE.UU.
-neutral,fr,La Commission européenne envisage des contre-mesures d'une valeur allant jusqu'à 28 milliards de dollars en réponse aux tarifs américains.
-neutral,de,Die Europäische Kommission erwägt Gegenmaßnahmen im Wert von bis zu 28 Milliarden Dollar als Reaktion auf die US-Zölle.
-neutral,es,El índice de sorpresas económicas de Citigroup para la eurozona alcanzó su nivel más alto desde abril de 2024.
-neutral,fr,L'indice des surprises économiques de Citigroup pour la zone euro a atteint son niveau le plus élevé depuis avril 2024.
-neutral,de,Der Economic Surprise Index von Citigroup für die Eurozone erreichte den höchsten Stand seit April 2024.
-neutral,es,"El rendimiento de los bonos del gobierno alemán a 10 años cayó al 0,25% en medio de la incertidumbre del mercado."
-neutral,fr,"Le rendement des obligations d'État allemandes à 10 ans est tombé à 0,25% en raison de l'incertitude du marché."
-neutral,de,"Die Rendite der 10-jährigen deutschen Staatsanleihen fiel auf 0,25% aufgrund der Marktunsicherheit."
-neutral,es,"El índice de precios al consumidor en la eurozona aumentó un 0,3% en marzo de 2025, según Eurostat."
-neutral,fr,"L'indice des prix à la consommation dans la zone euro a augmenté de 0,3% en mars 2025, selon Eurostat."
-neutral,de,"Der Verbraucherpreisindex in der Eurozone stieg im März 2025 um 0,3%, laut Eurostat."
-neutral,es,"El índice de producción industrial en la eurozona disminuyó un 0,2% en febrero de 2025, según datos recientes."
-neutral,fr,"L'indice de la production industrielle dans la zone euro a diminué de 0,2% en février 2025, selon les données récentes."
-neutral,de,"Der Industrieproduktionsindex in der Eurozone sank im Februar 2025 um 0,2%, laut aktuellen Daten."
-neutral,es,"El euro se mantuvo estable frente al dólar, cotizando a 1,10 en el mercado de divisas."
-neutral,fr,"L'euro est resté stable face au dollar, s'échangeant à 1,10 sur le marché des changes."
-neutral,de,"Der Euro blieb gegenüber dem Dollar stabil und wurde am Devisenmarkt bei 1,10 gehandelt."
-neutral,es,"Las ventas minoristas en la eurozona aumentaron un 0,5% en febrero de 2025, según Eurostat."
-neutral,fr,"Les ventes au détail dans la zone euro ont augmenté de 0,5% en février 2025, selon Eurostat."
-neutral,de,"Die Einzelhandelsumsätze in der Eurozone stiegen im Februar 2025 um 0,5%, laut Eurostat."
-neutral,es,"El índice de gestores de compras manufactureras en la eurozona se situó en 51,2 en marzo de 2025."
-neutral,fr,"L'indice des directeurs d'achat manufacturiers dans la zone euro s'est établi à 51,2 en mars 2025."
-neutral,de,"Der Einkaufsmanagerindex für das verarbeitende Gewerbe in der Eurozone lag im März 2025 bei 51,2."
-neutral,es,"La tasa de desempleo en la eurozona se mantuvo en 6,3% en febrero de 2025, según Eurostat."
-neutral,fr,"Le taux de chômage dans la zone euro est resté à 6,3% en février 2025, selon Eurostat."
-neutral,de,"Die Arbeitslosenquote in der Eurozone blieb im Februar 2025 bei 6,3%, laut Eurostat."
-neutral,es,"El índice de precios al productor en la eurozona aumentó un 0,4% en marzo de 2025, según datos oficiales."
-neutral,fr,"L'indice des prix à la production dans la zone euro a augmenté de 0,4% en mars 2025, selon les données officielles."
-neutral,de,"Der Erzeugerpreisindex in der Eurozone stieg im März 2025 um 0,4%, laut offiziellen Daten."
-neutral,es,"El índice de confianza empresarial en Alemania cayó a 95,5 en abril de 2025, según el Instituto Ifo."
-neutral,fr,"L'indice de confiance des entreprises en Allemagne est tombé à 95,5 en avril 2025, selon l'institut Ifo."
-neutral,de,"Der Geschäftsklimaindex in Deutschland fiel im April 2025 auf 95,5, laut dem Ifo-Institut."
-neutral,es,El índice de confianza del consumidor en Francia se mantuvo estable en 100 en marzo de 2025.
-neutral,fr,L'indice de confiance des consommateurs en France est resté stable à 100 en mars 2025.
-neutral,de,Der Verbrauchervertrauensindex in Frankreich blieb im März 2025 stabil bei
-negative,es,Las acciones europeas cayeron a un mínimo de 16 meses debido a los temores de una guerra comercial global.
-negative,fr,Les actions européennes ont chuté à un plus bas de 16 mois en raison des craintes d'une guerre commerciale mondiale.
-negative,de,Europäische Aktien fielen auf ein 16-Monats-Tief aufgrund von Befürchtungen eines globalen Handelskriegs.
-negative,es,"El índice bancario europeo cayó un 4,8%, entrando en territorio bajista por temor a una recesión inducida por aranceles."
-negative,fr,"L'indice bancaire européen a chuté de 4,8%, entrant en territoire baissier par crainte d'une récession induite par les tarifs."
-negative,de,"Der europäische Bankenindex fiel um 4,8% und geriet aufgrund von Rezessionsängsten durch Zölle in einen Bärenmarkt."
-negative,es,"El crecimiento del PIB de la eurozona se proyecta en un 0,9% para 2025, reflejando una desaceleración económica."
-negative,fr,"La croissance du PIB de la zone euro est projetée à 0,9% pour 2025, reflétant un ralentissement économique."
-negative,de,"Das BIP-Wachstum der Eurozone wird für 2025 auf 0,9% prognostiziert, was eine wirtschaftliche Verlangsamung widerspiegelt."
-negative,es,"El índice STOXX 600 cayó un 5,8%, continuando su racha de pérdidas debido a las tensiones comerciales."
-negative,fr,"L'indice STOXX 600 a chuté de 5,8%, poursuivant sa série de pertes en raison des tensions commerciales."
-negative,de,"Der STOXX 600 Index fiel um 5,8% und setzte seine Verlustserie aufgrund der Handelskonflikte fort."
-negative,es,"El rendimiento de los bonos alemanes a 10 años cayó al 0,25% en medio de la incertidumbre del mercado."
-negative,fr,"Le rendement des obligations allemandes à 10 ans est tombé à 0,25% en raison de l'incertitude du marché."
-negative,de,"Die Rendite der 10-jährigen deutschen Anleihen fiel auf 0,25% aufgrund der Marktunsicherheit."
-negative,es,"La confianza del consumidor en la eurozona cayó a -14,5 en marzo de 2025, el nivel más bajo en tres meses."
-negative,fr,"La confiance des consommateurs dans la zone euro est tombée à -14,5 en mars 2025, son niveau le plus bas en trois mois."
-negative,de,"Das Verbrauchervertrauen in der Eurozone fiel im März 2025 auf -14,5, den niedrigsten Stand seit drei Monaten."
-negative,es,"Las ventas minoristas en la eurozona disminuyeron un 0,5% en febrero de 2025, reflejando una menor confianza del consumidor."
-negative,fr,"Les ventes au détail dans la zone euro ont diminué de 0,5% en février 2025, reflétant une baisse de la confiance des consommateurs."
-negative,de,"Die Einzelhandelsumsätze in der Eurozone sanken im Februar 2025 um 0,5%, was auf ein geringeres Verbrauchervertrauen hindeutet."
-negative,es,"El índice de producción industrial en la eurozona disminuyó un 0,2% en febrero de 2025, según datos recientes."
-negative,fr,"L'indice de la production industrielle dans la zone euro a diminué de 0,2% en février 2025, selon les données récentes."
-negative,de,"Der Industrieproduktionsindex in der Eurozone sank im Februar 2025 um 0,2%, laut aktuellen Daten."
-negative,es,"El euro se depreció frente al dólar, cotizando a 1,08 en el mercado de divisas."
-negative,fr,"L'euro s'est déprécié face au dollar, s'échangeant à 1,08 sur le marché des changes."
-negative,de,"Der Euro wertete gegenüber dem Dollar ab und wurde am Devisenmarkt bei 1,08 gehandelt."
-negative,es,"La tasa de desempleo en la eurozona aumentó a 6,5% en febrero de 2025, según Eurostat."
-negative,fr,"Le taux de chômage dans la zone euro a augmenté à 6,5% en février 2025, selon Eurostat."
-negative,de,"Die Arbeitslosenquote in der Eurozone stieg im Februar 2025 auf 6,5%, laut Eurostat."
-negative,es,"El índice de precios al productor en la eurozona aumentó un 0,4% en marzo de 2025, indicando presiones inflacionarias."
-negative,fr,"L'indice des prix à la production dans la zone euro a augmenté de 0,4%"
-positive,es,"La inflación en la eurozona cayó al 2,2% en marzo de 2025, acercándose al objetivo del BCE y aliviando las presiones sobre los consumidores."
-positive,fr,"L'inflation dans la zone euro est tombée à 2,2% en mars 2025, se rapprochant de l'objectif de la BCE et allégeant les pressions sur les consommateurs."
-positive,de,"Die Inflation in der Eurozone fiel im März 2025 auf 2,2% und näherte sich dem Ziel der EZB, was den Druck auf die Verbraucher verringert."
-positive,es,"La tasa de desempleo en la eurozona alcanzó un nuevo mínimo histórico del 6,1% en febrero de 2025, reflejando un mercado laboral robusto."
-positive,fr,"Le taux de chômage dans la zone euro a atteint un nouveau plus bas historique de 6,1% en février 2025, reflétant un marché du travail robuste."
-positive,de,"Die Arbeitslosenquote in der Eurozone erreichte im Februar 2025 mit 6,1% ein neues historisches Tief, was auf einen robusten Arbeitsmarkt hinweist."
-positive,es,"El índice de confianza económica de la eurozona aumentó a 95,2 en enero de 2025, señalando una mejora en el sentimiento empresarial."
-positive,fr,"L'indice de confiance économique de la zone euro a augmenté à 95,2 en janvier 2025, indiquant une amélioration du sentiment des entreprises."
-positive,de,"Der Wirtschaftsvertrauensindex der Eurozone stieg im Januar 2025 auf 95,2 und signalisiert eine Verbesserung des Geschäftsklimas."
-positive,es,"El crecimiento del PIB de la eurozona se prevé que alcance el 1,6% en 2025, cerrando la brecha con Estados Unidos."
-positive,fr,"La croissance du PIB de la zone euro devrait atteindre 1,6% en 2025, réduisant l'écart avec les États-Unis."
-positive,de,"Das BIP-Wachstum der Eurozone wird für 2025 auf 1,6% prognostiziert, wodurch die Lücke zu den USA geschlossen wird."
-positive,es,"El índice STOXX 600 mostró resiliencia en medio de tensiones comerciales, reflejando la fortaleza de las empresas europeas."
-positive,fr,"L'indice STOXX 600 a montré une résilience face aux tensions commerciales, reflétant la solidité des entreprises européennes."
-positive,de,Der STOXX 600 Index zeigte Widerstandsfähigkeit trotz Handelskonflikten und spiegelt die Stärke europäischer Unternehmen wider.
-positive,es,La Comisión Europea lanzó una consulta para promover la cooperación industrial en la adquisición y reciclaje de materias primas críticas.
-positive,fr,La Commission européenne a lancé une consultation pour promouvoir la coopération industrielle dans l'acquisition et le recyclage de matières premières critiques.
-positive,de,"Die Europäische Kommission hat eine Konsultation gestartet, um die industrielle Zusammenarbeit bei der Beschaffung und dem Recycling kritischer Rohstoffe zu fördern."
-positive,es,"La confianza del consumidor en la eurozona mejoró en marzo de 2025, indicando una perspectiva más optimista de los hogares."
-positive,fr,"La confiance des consommateurs dans la zone euro s'est améliorée en mars 2025, indiquant une perspective plus optimiste des ménages."
-positive,de,Das Verbrauchervertrauen in der Eurozone verbesserte sich im März 2025 und deutet auf eine optimistischere Sicht der Haushalte hin.
-negative,es,Las acciones europeas cayeron a un mínimo de 16 meses debido a los temores de una guerra comercial global.
-negative,fr,Les actions européennes ont chuté à un plus bas de 16 mois en raison des craintes d'une guerre commerciale mondiale.
-negative,de,Europäische Aktien fielen auf ein 16-Monats-Tief aufgrund von Befürchtungen eines globalen Handelskriegs.
-negative,es,"El índice bancario europeo cayó un 4,8%, entrando en territorio bajista por temor a una recesión inducida por aranceles."
-negative,fr,"L'indice bancaire européen a chuté de 4,8%, entrant en territoire baissier par crainte d'une récession induite par les tarifs."
-negative,de,"Der europäische Bankenindex fiel um 4,8% und geriet aufgrund von Rezessionsängsten durch Zölle in einen Bärenmarkt."
-negative,es,"El crecimiento del PIB de la eurozona se proyecta en un 0,9% para 2025, reflejando una desaceleración económica."
-negative,fr,"La croissance du PIB de la zone euro est projetée à 0,9% pour 2025, reflétant un ralentissement économique."
-negative,de,"Das BIP-Wachstum der Eurozone wird für 2025 auf 0,9% prognostiziert, was eine wirtschaftliche Verlangsamung widerspiegelt."
-negative,es,"El índice STOXX 600 cayó un 5,8%, continuando su racha de pérdidas debido a las tensiones comerciales."
-negative,fr,"L'indice STOXX 600 a chuté de 5,8%, poursuivant sa série de pertes en raison des tensions commerciales."
-negative,de,"Der STOXX 600 Index fiel um 5,8% und setzte seine Verlustserie aufgrund der Handelskonflikte fort."
-negative,es,"El rendimiento de los bonos alemanes a 10 años cayó al 0,25% en medio de la incertidumbre del mercado."
-negative,fr,"Le rendement des obligations allemandes à 10 ans est tombé à 0,25% en raison de l'incertitude du marché."
-negative,de,"Die Rendite der 10-jährigen deutschen Anleihen fiel auf 0,25% aufgrund der Marktunsicherheit."
-negative,es,La confianza del inversor en la eurozona cayó a su nivel más bajo en más de un año debido a los aranceles de EE.UU.
-negative,fr,La confiance des investisseurs dans la zone euro est tombée à son niveau le plus bas depuis plus d'un an en raison des tarifs américains.
-negative,de,Das Investorenvertrauen in der Eurozone fiel auf den niedrigsten Stand seit über einem Jahr aufgrund der US-Zölle.
-negative,es,Las acciones de defensa europeas registraron su mayor caída diaria desde abril de 2020 debido a preocupaciones sobre una recesión global.
-negative,fr,Les actions de la défense européenne ont enregistré leur plus forte baisse quotidienne depuis avril 2020 en raison des craintes d'une récession mondiale.
-negative,de,Europäische Verteidigungsaktien verzeichneten ihren größten Tagesrückgang seit April 2020 aufgrund von Befürchtungen einer globalen Rezession.
-negative,es,"El índice de volatilidad de la eurozona alcanzó su nivel más alto desde agosto, reflejando la creciente incertidumbre del mercado."
-negative,fr,"L'indice de volatilité de la zone euro a atteint son niveau le plus élevé depuis août, reflétant l'incertitude croissante du marché."
-negative,de,"Der Volatilitätsindex der Eurozone erreichte den höchsten Stand seit August, was die zunehmende Marktunsicherheit widerspiegelt."
-negative,es,Las acciones europeas confirmaron una corrección después de caer más del 10% desde su máximo histórico debido a las preocupaciones arancelarias.
-negative,fr,Les actions européennes ont confirmé une correction après avoir chuté de plus de 10% depuis leur record historique en raison des préoccupations tarifaires.
-negative,de,"Europäische Aktien bestätigten eine Korrektur, nachdem sie aufgrund von Zollbedenken um mehr als 10% von ihrem Allzeithoch gefallen waren."
-negative,es,Los bancos europeos extendieron sus pérdidas en medio de una venta masiva provocada por los aranceles de EE.UU.
-negative,fr,Les banques européennes ont prolongé leurs pertes au milieu d'une vente massive provoquée par les tarifs américains.
-negative,de,Europäische Banken verlängerten ihre Verluste inmitten eines durch US-Zölle ausgelösten Ausverkaufs.
-negative,es,"El índice de confianza económica de la eurozona cayó a -19,5 en abril, su nivel más bajo desde octubre de 2023."
-negative,fr,"L'indice de confiance économique de la zone euro est tombé à -19,5 en avril, son niveau le plus bas depuis octobre 2023."
+sentence,sentiment,lang
+Las acciones de Sage Group aumentaron casi un 20% tras anunciar un programa de recompra de acciones de £400 millones.,1,es
+Les actions de Sage Group ont augmenté de près de 20% après l'annonce d'un programme de rachat d'actions de 400 millions de livres sterling.,1,fr
+"Die Aktien der Sage Group stiegen um fast 20%, nachdem ein Aktienrückkaufprogramm in Höhe von 400 Millionen Pfund angekündigt wurde.",1,de
+DiscoverIE ha logrado resultados positivos gracias a su estrategia de adquisiciones en serie.,1,es
+DiscoverIE a obtenu des résultats positifs grâce à sa stratégie d'acquisitions en série.,1,fr
+DiscoverIE erzielte positive Ergebnisse durch seine Strategie der Serienakquisitionen.,1,de
+La moral de los inversores de la zona euro cayó drásticamente en abril debido a los nuevos aranceles impuestos por el presidente Trump.,2,es
+Le moral des investisseurs de la zone euro a chuté en avril en raison des nouveaux tarifs imposés par le président Trump.,2,fr
+"Die Stimmung der Investoren in der Eurozone fiel im April stark aufgrund der neuen Zölle, die von Präsident Trump verhängt wurden.",2,de
+Los mercados financieros globales experimentaron una gran agitación tras el anuncio de aranceles generalizados por parte del presidente Trump.,2,es
+Les marchés financiers mondiaux ont connu une grande agitation après l'annonce par le président Trump de tarifs généralisés.,2,fr
+Die globalen Finanzmärkte erlebten große Turbulenzen nach der Ankündigung umfassender Zölle durch Präsident Trump.,2,de
+"La Reserva Federal mantuvo las tasas de interés sin cambios en su reunión de marzo, señalando una mayor incertidumbre económica.",0,es
+"La Réserve fédérale a maintenu les taux d'intérêt inchangés lors de sa réunion de mars, signalant une incertitude économique accrue.",0,fr
+Die Federal Reserve hielt die Zinssätze bei ihrer März-Sitzung unverändert und wies auf eine erhöhte wirtschaftliche Unsicherheit hin.,0,de
+"El índice de volatilidad VIX, conocido como el 'indicador de miedo' de Wall Street, alcanzó su nivel más alto desde agosto.",0,es
+"L'indice de volatilité VIX, connu comme le 'baromètre de la peur' de Wall Street, a atteint son niveau le plus élevé depuis août.",0,fr
+"Der Volatilitätsindex VIX, bekannt als Wall Streets 'Angstindikator', erreichte seinen höchsten Stand seit August.",0,de
+Las acciones bancarias globales cayeron un 8% debido a los temores de recesión tras los nuevos aranceles impuestos por el presidente Trump.,2,es
+Les actions bancaires mondiales ont chuté de 8% en raison des craintes de récession après les nouveaux tarifs imposés par le président Trump.,2,fr
+Die globalen Bankaktien fielen um 8% aufgrund von Rezessionsängsten nach den neuen Zöllen von Präsident Trump.,2,de
+El índice Nasdaq entró en territorio bajista después de una caída del 6% en un solo día.,2,es
+Le Nasdaq est entré en territoire baissier après une chute de 6% en une seule journée.,2,fr
+Der Nasdaq geriet nach einem Rückgang von 6% an einem einzigen Tag in den Bärenmarkt.,2,de
+J.P.Morgan aumentó las probabilidades de una recesión global al 60% debido a las tensiones comerciales.,2,es
+J.P.Morgan a augmenté les probabilités d'une récession mondiale à 60% en raison des tensions commerciales.,2,fr
+J.P.Morgan erhöhte die Wahrscheinlichkeit einer globalen Rezession auf 60% aufgrund der Handelskonflikte.,2,de
+La confianza del consumidor en EE.UU. cayó un 11% en marzo debido a la ansiedad por la inflación.,2,es
+La confiance des consommateurs aux États-Unis a chuté de 11% en mars en raison de l'anxiété liée à l'inflation.,2,fr
+Das Verbrauchervertrauen in den USA fiel im März um 11% aufgrund von Inflationsängsten.,2,de
+"El índice S&P 500 cayó un 7,5% en el primer trimestre de 2025 tras la imposición de aranceles por parte del presidente Trump.",2,es
+"L'indice S&P 500 a chuté de 7,5% au premier trimestre 2025 après l'imposition de tarifs par le président Trump.",2,fr
+"Der S&P 500 Index fiel im ersten Quartal 2025 um 7,5% nach der Einführung von Zöllen durch Präsident Trump.",2,de
+"La moral de los inversores cayó drásticamente, con un 45% esperando que los precios de las acciones disminuyan.",2,es
+"Le moral des investisseurs a chuté drastiquement, avec 45% s'attendant à une baisse des prix des actions.",2,fr
+"Die Stimmung der Investoren sank drastisch, wobei 45% einen Rückgang der Aktienkurse erwarten.",2,de
+El índice de volatilidad VIX alcanzó su nivel más alto desde agosto debido a la incertidumbre del mercado.,2,es
+L'indice de volatilité VIX a atteint son niveau le plus élevé depuis août en raison de l'incertitude du marché.,2,fr
+Der Volatilitätsindex VIX erreichte aufgrund der Marktunsicherheit seinen höchsten Stand seit August.,2,de
+El mercado de valores experimentó su peor día desde 2020 tras la imposición de nuevos aranceles.,2,es
+Le marché boursier a connu sa pire journée depuis 2020 après l'imposition de nouveaux tarifs.,2,fr
+Der Aktienmarkt erlebte seinen schlimmsten Tag seit 2020 nach der Einführung neuer Zölle.,2,de
+Las acciones de tecnología cayeron significativamente debido a las preocupaciones sobre la guerra comercial.,2,es
+Les actions technologiques ont chuté de manière significative en raison des inquiétudes concernant la guerre commerciale.,2,fr
+Technologieaktien fielen erheblich aufgrund von Bedenken hinsichtlich des Handelskriegs.,2,de
+"El rendimiento de los bonos del Tesoro de EE.UU. cayó al 2,5% en medio de la huida hacia activos seguros.",2,es
+"Le rendement des bons du Trésor américain est tombé à 2,5% en raison de la fuite vers des actifs sûrs.",2,fr
+"Die Rendite der US-Staatsanleihen fiel auf 2,5% aufgrund der Flucht in sichere Anlagen.",2,de
+El precio del petróleo cayó a mínimos de cuatro años debido a las preocupaciones sobre la demanda global.,2,es
+Le prix du pétrole est tombé à son plus bas niveau depuis quatre ans en raison des inquiétudes concernant la demande mondiale.,2,fr
+Der Ölpreis fiel auf ein Vierjahrestief aufgrund von Bedenken hinsichtlich der globalen Nachfrage.,2,de
+El oro subió un 3% ya que los inversores buscaron refugio en activos seguros.,2,es
+L'or a augmenté de 3% alors que les investisseurs recherchaient des valeurs refuges.,2,fr
+"Gold stieg um 3%, da Investoren sichere Anlagen suchten.",2,de
+"El índice de gestores de compras manufactureras cayó a 48, indicando contracción en el sector.",2,es
+"L'indice des directeurs d'achat manufacturiers est tombé à 48, indiquant une contraction du secteur.",2,fr
+Der Einkaufsmanagerindex für das verarbeitende Gewerbe fiel auf 48 und signalisiert eine Schrumpfung des Sektors.,2,de
+"Las solicitudes de desempleo aumentaron en 20,000 la semana pasada, señalando debilidad en el mercado laboral.",2,es
+"Les demandes d'allocations chômage ont augmenté de 20 000 la semaine dernière, signalant une faiblesse du marché du travail.",2,fr
+Die Arbeitslosenmeldungen stiegen letzte Woche um 20.000 und deuten auf eine Schwäche des Arbeitsmarktes hin.,2,de
+El índice de confianza empresarial cayó a su nivel más bajo en cinco años debido a la incertidumbre económica.,2,es
+L'indice de confiance des entreprises est tombé à son niveau le plus bas depuis cinq ans en raison de l'incertitude économique.,2,fr
+Der Geschäftsklimaindex fiel aufgrund wirtschaftlicher Unsicherheit auf den niedrigsten Stand seit fünf Jahren.,2,de
+"Las ventas minoristas disminuyeron un 0,5% el mes pasado, reflejando una menor confianza del consumidor.",2,es
+"Les ventes au détail ont diminué de 0,5% le mois dernier, reflétant une baisse de la confiance des consommateurs.",2,fr
+"Die Einzelhandelsumsätze sanken im vergangenen Monat um 0,5% und spiegeln ein geringeres Verbrauchervertrauen wider.",2,de
+"El índice de precios al consumidor aumentó un 0,4% en marzo, avivando los temores de inflación.",2,es
+"L'indice des prix à la consommation a augmenté de 0,4% en mars, alimentant les craintes d'inflation.",2,fr
+"Der Verbraucherpreisindex stieg im März um 0,4% und schürte Inflationsängste.",2,de
+"El mercado inmobiliario mostró signos de enfriamiento, con una caída del 2% en las ventas de viviendas nuevas.",2,es
+"Le marché immobilier a montré des signes de ralentissement, avec une baisse de 2% des ventes de logements neufs.",2,fr
+"Las acciones europeas superaron al S&P 500 en el primer trimestre de 2025, impulsadas por valoraciones bajas y estímulos fiscales.",1,es
+"Les actions européennes ont surpassé le S&P 500 au premier trimestre 2025, soutenues par des valorisations faibles et des mesures de relance fiscale.",1,fr
+"Europäische Aktien übertrafen den S&P 500 im ersten Quartal 2025, angetrieben durch niedrige Bewertungen und fiskalische Anreize.",1,de
+"El índice Euro Stoxx 50 aumentó un 11,9% tras las elecciones, reflejando la confianza de los inversores en las reformas europeas.",1,es
+"L'indice Euro Stoxx 50 a augmenté de 11,9% après les élections, reflétant la confiance des investisseurs dans les réformes européennes.",1,fr
+"Der Euro Stoxx 50 stieg nach den Wahlen um 11,9%, was das Vertrauen der Investoren in europäische Reformen widerspiegelt.",1,de
+"El sector bancario europeo mostró resiliencia con sólidos resultados en el cuarto trimestre, impulsando el optimismo para 2025.",1,es
+"Le secteur bancaire européen a montré une résilience avec de solides résultats au quatrième trimestre, renforçant l'optimisme pour 2025.",1,fr
+"Der europäische Bankensektor zeigte mit starken Ergebnissen im vierten Quartal Resilienz, was den Optimismus für 2025 stärkt.",1,de
+"Las pequeñas empresas del Reino Unido expresaron optimismo para 2025, con un 92% esperando crecimiento a pesar de los desafíos económicos.",1,es
+"Les petites entreprises britanniques ont exprimé leur optimisme pour 2025, 92% s'attendant à une croissance malgré les défis économiques.",1,fr
+"Kleine Unternehmen im Vereinigten Königreich äußerten Optimismus für 2025, wobei 92% trotz wirtschaftlicher Herausforderungen Wachstum erwarten.",1,de
+El plan de estímulo económico de Alemania de €500 mil millones busca revitalizar la infraestructura y fortalecer la industria.,1,es
+Le plan de relance économique de l'Allemagne de 500 milliards d'euros vise à revitaliser les infrastructures et à renforcer l'industrie.,1,fr
+"Deutschlands Konjunkturpaket von 500 Milliarden Euro zielt darauf ab, die Infrastruktur zu revitalisieren und die Industrie zu stärken.",1,de
+"La iniciativa ReArm Europe de la UE propone una inversión de €800 mil millones en defensa, estimulando el crecimiento económico.",1,es
+"L'initiative ReArm Europe de l'UE propose un investissement de 800 milliards d'euros dans la défense, stimulant la croissance économique.",1,fr
+"Die ReArm Europe-Initiative der EU schlägt eine Investition von 800 Milliarden Euro in die Verteidigung vor, was das Wirtschaftswachstum ankurbelt.",1,de
+"El índice de sorpresas económicas de Citigroup para la eurozona alcanzó su nivel más alto desde abril de 2024, indicando mejoras económicas.",1,es
+"L'indice des surprises économiques de Citigroup pour la zone euro a atteint son niveau le plus élevé depuis avril 2024, indiquant des améliorations économiques.",1,fr
+"Der Economic Surprise Index von Citigroup für die Eurozone erreichte den höchsten Stand seit April 2024, was auf wirtschaftliche Verbesserungen hindeutet.",1,de
+"La cumbre de IA en París reunió a líderes globales, destacando el compromiso de Europa con la innovación tecnológica.",1,es
+"Le sommet sur l'IA à Paris a réuni des leaders mondiaux, soulignant l'engagement de l'Europe envers l'innovation technologique.",1,fr
+Der KI-Gipfel in Paris brachte globale Führungskräfte zusammen und unterstrich Europas Engagement für technologische Innovation.,1,de
+"La iniciativa InvestAI de la UE movilizará €200 mil millones para inversiones en inteligencia artificial, fortaleciendo el sector tecnológico europeo.",1,es
+"L'initiative InvestAI de l'UE mobilisera 200 milliards d'euros pour des investissements dans l'intelligence artificielle, renforçant le secteur technologique européen.",1,fr
+Die InvestAI-Initiative der EU wird 200 Milliarden Euro für Investitionen in künstliche Intelligenz mobilisieren und den europäischen Technologiesektor stärken.,1,de
+"La Comisión Europea propone eliminar aranceles industriales sobre productos estadounidenses, fomentando el comercio transatlántico.",1,es
+"La Commission européenne propose de supprimer les droits de douane industriels sur les produits américains, favorisant le commerce transatlantique.",1,fr
+"Die Europäische Kommission schlägt vor, Industriezölle auf US-Waren zu entfernen, um den transatlantischen Handel zu fördern.",1,de
+El plan NextGenerationEU de €750 mil millones impulsa la recuperación económica y la transición verde en Europa.,1,es
+Le plan NextGenerationEU de 750 milliards d'euros stimule la reprise économique et la transition verte en Europe.,1,fr
+Der 750-Milliarden-Euro-Plan NextGenerationEU fördert die wirtschaftliche Erholung und den grünen Wandel in Europa.,1,de
+"El crecimiento del PIB de la eurozona se prevé que alcance el 1,6% en 2025, cerrando la brecha con Estados Unidos.",1,es
+"La croissance du PIB de la zone euro devrait atteindre 1,6% en 2025, réduisant l'écart avec les États-Unis.",1,fr
+"Das BIP-Wachstum der Eurozone wird für 2025 auf 1,6% prognostiziert, wodurch die Lücke zu den USA geschlossen wird.",1,de
+"Las inversiones en defensa y tecnología en Europa están atrayendo a inversores globales, impulsando el crecimiento económico.",1,es
+"Les investissements dans la défense et la technologie en Europe attirent des investisseurs mondiaux, stimulant la croissance économique.",1,fr
+Investitionen in Verteidigung und Technologie in Europa ziehen globale Investoren an und fördern das Wirtschaftswachstum.,1,de
+El aumento del gasto en infraestructura en Alemania está creando oportunidades significativas para las empresas de construcción europeas.,1,es
+L'augmentation des dépenses en infrastructures en Allemagne crée des opportunités significatives pour les entreprises de construction européennes.,1,fr
+Die erhöhten Infrastrukturausgaben in Deutschland schaffen bedeutende Chancen für europäische Bauunternehmen.,1,de
+La resiliencia del sector bancario europeo refleja una gestión sólida y una economía en recuperación.,1,es
+La résilience du secteur bancaire européen reflète une gestion solide et une économie en reprise.,1,fr
+Die Resilienz des europäischen Bankensektors spiegelt solides Management und eine sich erholende Wirtschaft wider.,1,de
+"Las reformas fiscales en la UE están mejorando el entorno empresarial, fomentando la inversión y el crecimiento.",1,es
+"Les réformes fiscales dans l'UE améliorent l'environnement des affaires, favorisant l'investissement et la croissance.",1,fr
+Steuerreformen in der EU verbessern das Geschäftsumfeld und fördern Investitionen und Wachstum.,1,de
+"El índice DAX alemán alcanzó un máximo histórico antes de las elecciones federales, reflejando la confianza del mercado en la estabilidad política.",1,es
+"L'indice DAX allemand a atteint un niveau record avant les élections fédérales, reflétant la confiance du marché dans la stabilité politique.",1,fr
+"Der deutsche DAX-Index erreichte vor den Bundestagswahlen ein Allzeithoch, was das Vertrauen des Marktes in die politische Stabilität widerspiegelt.",1,de
+"El sector tecnológico europeo experimentó un crecimiento significativo, con empresas líderes reportando aumentos en ingresos y expansión de mercado.",1,es
+"Le secteur technologique européen a connu une croissance significative, avec des entreprises leaders rapportant des augmentations de revenus et une expansion du marché.",1,fr
+"Der europäische Technologiesektor verzeichnete ein erhebliches Wachstum, wobei führende Unternehmen Umsatzsteigerungen und Marktexpansion meldeten.",1,de
+"Las exportaciones de la eurozona aumentaron un 5% en el primer trimestre de 2025, impulsadas por la demanda creciente en mercados asiáticos.",1,es
+"Les exportations de la zone euro ont augmenté de 5% au premier trimestre 2025, stimulées par la demande croissante sur les marchés asiatiques.",1,fr
+"Die Exporte der Eurozone stiegen im ersten Quartal 2025 um 5%, angetrieben durch die steigende Nachfrage auf asiatischen Märkten.",1,de
+"El desempleo en España cayó al 12%, su nivel más bajo en una década, indicando una recuperación económica sostenida.",1,es
+"Le chômage en Espagne est tombé à 12%, son niveau le plus bas en une décennie, indiquant une reprise économique soutenue.",1,fr
+"Die Arbeitslosigkeit in Spanien sank auf 12%, den niedrigsten Stand seit einem Jahrzehnt, was auf eine anhaltende wirtschaftliche Erholung hindeutet.",1,de
+"La inversión extranjera directa en Francia aumentó un 15% en 2025, reflejando la confianza de los inversores en la economía francesa.",1,es
+"Les investissements directs étrangers en France ont augmenté de 15% en 2025, reflétant la confiance des investisseurs dans l'économie française.",1,fr
+"Die ausländischen Direktinvestitionen in Frankreich stiegen 2025 um 15%, was das Vertrauen der Investoren in die französische Wirtschaft widerspiegelt.",1,de
+"El sector manufacturero italiano registró un crecimiento del 3% en producción, señalando una recuperación en la industria.",1,es
+"Le secteur manufacturier italien a enregistré une croissance de 3% de la production, signalant une reprise de l'industrie.",1,fr
+"Der italienische Fertigungssektor verzeichnete ein Produktionswachstum von 3%, was auf eine Erholung der Industrie hindeutet.",1,de
+"El mercado inmobiliario en los Países Bajos mostró signos de fortalecimiento, con un aumento del 7% en los precios de la vivienda.",1,es
+"Le marché immobilier aux Pays-Bas a montré des signes de renforcement, avec une augmentation de 7% des prix de l'immobilier.",1,fr
+"Der Immobilienmarkt in den Niederlanden zeigte Anzeichen einer Stärkung, mit einem Anstieg der Immobilienpreise um 7%.",1,de
+Las startups de tecnología financiera en Europa recaudaron colectivamente €2 mil millones en financiamiento en el primer trimestre de 2025.,1,es
+Les startups de technologie financière en Europe ont collectivement levé 2 milliards d'euros de financement au premier trimestre 2025.,1,fr
+Fintech-Startups in Europa sammelten im ersten Quartal 2025 insgesamt 2 Milliarden Euro an Finanzierungen ein.,1,de
+"El turismo en Grecia experimentó un aumento del 10% en llegadas internacionales, impulsando la economía local.",1,es
+"Le tourisme en Grèce a connu une augmentation de 10% des arrivées internationales, stimulant l'économie locale.",1,fr
+"Der Tourismus in Griechenland verzeichnete einen Anstieg von 10% bei internationalen Ankünften, was die lokale Wirtschaft ankurbelt.",1,de
+"El mercado de bonos corporativos europeos mostró estabilidad, con rendimientos atractivos que atraen a inversores globales.",1,es
+"Le marché des obligations d'entreprises européennes a montré une stabilité, avec des rendements attractifs attirant les investisseurs mondiaux.",1,fr
+"Der europäische Unternehmensanleihemarkt zeigte Stabilität, mit attraktiven Renditen, die globale Investoren anziehen.",1,de
+"La producción de energía renovable en Escandinavia aumentó un 8%, reforzando la transición hacia fuentes sostenibles.",1,es
+"La production d'énergie renouvelable en Scandinavie a augmenté de 8%, renforçant la transition vers des sources durables.",1,fr
+"Die Produktion erneuerbarer Energien in Skandinavien stieg um 8%, was den Übergang zu nachhaltigen Quellen stärkt.",1,de
+"El índice de confianza del consumidor en Portugal alcanzó su nivel más alto desde 2010, reflejando optimismo económico.",1,es
+"L'indice de confiance des consommateurs au Portugal a atteint son niveau le plus élevé depuis 2010, reflétant un optimisme économique.",1,fr
+"El Banco Central Europeo mantuvo las tasas de interés sin cambios en su reunión de marzo, señalando incertidumbre económica.",0,es
+"La Banque centrale européenne a maintenu les taux d'intérêt inchangés lors de sa réunion de mars, signalant une incertitude économique.",0,fr
+Die Europäische Zentralbank hielt die Zinssätze bei ihrer März-Sitzung unverändert und wies auf wirtschaftliche Unsicherheit hin.,0,de
+"El índice de confianza del consumidor en la eurozona cayó a -14,5 en marzo de 2025, el nivel más bajo en tres meses.",0,es
+"L'indice de confiance des consommateurs dans la zone euro est tombé à -14,5 en mars 2025, son niveau le plus bas en trois mois.",0,fr
+"Der Verbrauchervertrauensindex in der Eurozone fiel im März 2025 auf -14,5, den niedrigsten Stand seit drei Monaten.",0,de
+"El crecimiento del PIB de la eurozona se proyecta en un 0,9% para 2025, según las proyecciones del BCE.",0,es
+"La croissance du PIB de la zone euro est projetée à 0,9% pour 2025, selon les projections de la BCE.",0,fr
+"Das BIP-Wachstum der Eurozone wird für 2025 auf 0,9% prognostiziert, laut den Projektionen der EZB.",0,de
+"El índice STOXX 600 cayó un 5,8% en las operaciones matutinas del 7 de abril de 2025, alcanzando su nivel más bajo en 16 meses.",0,es
+"L'indice STOXX 600 a chuté de 5,8% lors des échanges matinaux du 7 avril 2025, atteignant son niveau le plus bas en 16 mois.",0,fr
+"Der STOXX 600 Index fiel am Morgen des 7. April 2025 um 5,8% und erreichte den niedrigsten Stand seit 16 Monaten.",0,de
+La Comisión Europea está considerando contramedidas por valor de hasta $28 mil millones en respuesta a los aranceles de EE.UU.,0,es
+La Commission européenne envisage des contre-mesures d'une valeur allant jusqu'à 28 milliards de dollars en réponse aux tarifs américains.,0,fr
+Die Europäische Kommission erwägt Gegenmaßnahmen im Wert von bis zu 28 Milliarden Dollar als Reaktion auf die US-Zölle.,0,de
+El índice de sorpresas económicas de Citigroup para la eurozona alcanzó su nivel más alto desde abril de 2024.,0,es
+L'indice des surprises économiques de Citigroup pour la zone euro a atteint son niveau le plus élevé depuis avril 2024.,0,fr
+Der Economic Surprise Index von Citigroup für die Eurozone erreichte den höchsten Stand seit April 2024.,0,de
+"El rendimiento de los bonos del gobierno alemán a 10 años cayó al 0,25% en medio de la incertidumbre del mercado.",0,es
+"Le rendement des obligations d'État allemandes à 10 ans est tombé à 0,25% en raison de l'incertitude du marché.",0,fr
+"Die Rendite der 10-jährigen deutschen Staatsanleihen fiel auf 0,25% aufgrund der Marktunsicherheit.",0,de
+"El índice de precios al consumidor en la eurozona aumentó un 0,3% en marzo de 2025, según Eurostat.",0,es
+"L'indice des prix à la consommation dans la zone euro a augmenté de 0,3% en mars 2025, selon Eurostat.",0,fr
+"Der Verbraucherpreisindex in der Eurozone stieg im März 2025 um 0,3%, laut Eurostat.",0,de
+"El índice de producción industrial en la eurozona disminuyó un 0,2% en febrero de 2025, según datos recientes.",0,es
+"L'indice de la production industrielle dans la zone euro a diminué de 0,2% en février 2025, selon les données récentes.",0,fr
+"Der Industrieproduktionsindex in der Eurozone sank im Februar 2025 um 0,2%, laut aktuellen Daten.",0,de
+"El euro se mantuvo estable frente al dólar, cotizando a 1,10 en el mercado de divisas.",0,es
+"L'euro est resté stable face au dollar, s'échangeant à 1,10 sur le marché des changes.",0,fr
+"Der Euro blieb gegenüber dem Dollar stabil und wurde am Devisenmarkt bei 1,10 gehandelt.",0,de
+"Las ventas minoristas en la eurozona aumentaron un 0,5% en febrero de 2025, según Eurostat.",0,es
+"Les ventes au détail dans la zone euro ont augmenté de 0,5% en février 2025, selon Eurostat.",0,fr
+"Die Einzelhandelsumsätze in der Eurozone stiegen im Februar 2025 um 0,5%, laut Eurostat.",0,de
+"El índice de gestores de compras manufactureras en la eurozona se situó en 51,2 en marzo de 2025.",0,es
+"L'indice des directeurs d'achat manufacturiers dans la zone euro s'est établi à 51,2 en mars 2025.",0,fr
+"Der Einkaufsmanagerindex für das verarbeitende Gewerbe in der Eurozone lag im März 2025 bei 51,2.",0,de
+"La tasa de desempleo en la eurozona se mantuvo en 6,3% en febrero de 2025, según Eurostat.",0,es
+"Le taux de chômage dans la zone euro est resté à 6,3% en février 2025, selon Eurostat.",0,fr
+"Die Arbeitslosenquote in der Eurozone blieb im Februar 2025 bei 6,3%, laut Eurostat.",0,de
+"El índice de precios al productor en la eurozona aumentó un 0,4% en marzo de 2025, según datos oficiales.",0,es
+"L'indice des prix à la production dans la zone euro a augmenté de 0,4% en mars 2025, selon les données officielles.",0,fr
+"Der Erzeugerpreisindex in der Eurozone stieg im März 2025 um 0,4%, laut offiziellen Daten.",0,de
+"El índice de confianza empresarial en Alemania cayó a 95,5 en abril de 2025, según el Instituto Ifo.",0,es
+"L'indice de confiance des entreprises en Allemagne est tombé à 95,5 en avril 2025, selon l'institut Ifo.",0,fr
+"Der Geschäftsklimaindex in Deutschland fiel im April 2025 auf 95,5, laut dem Ifo-Institut.",0,de
+El índice de confianza del consumidor en Francia se mantuvo estable en 100 en marzo de 2025.,0,es
+L'indice de confiance des consommateurs en France est resté stable à 100 en mars 2025.,0,fr
+Der Verbrauchervertrauensindex in Frankreich blieb im März 2025 stabil bei,0,de
+Las acciones europeas cayeron a un mínimo de 16 meses debido a los temores de una guerra comercial global.,2,es
+Les actions européennes ont chuté à un plus bas de 16 mois en raison des craintes d'une guerre commerciale mondiale.,2,fr
+Europäische Aktien fielen auf ein 16-Monats-Tief aufgrund von Befürchtungen eines globalen Handelskriegs.,2,de
+"El índice bancario europeo cayó un 4,8%, entrando en territorio bajista por temor a una recesión inducida por aranceles.",2,es
+"L'indice bancaire européen a chuté de 4,8%, entrant en territoire baissier par crainte d'une récession induite par les tarifs.",2,fr
+"Der europäische Bankenindex fiel um 4,8% und geriet aufgrund von Rezessionsängsten durch Zölle in einen Bärenmarkt.",2,de
+"El crecimiento del PIB de la eurozona se proyecta en un 0,9% para 2025, reflejando una desaceleración económica.",2,es
+"La croissance du PIB de la zone euro est projetée à 0,9% pour 2025, reflétant un ralentissement économique.",2,fr
+"Das BIP-Wachstum der Eurozone wird für 2025 auf 0,9% prognostiziert, was eine wirtschaftliche Verlangsamung widerspiegelt.",2,de
+"El índice STOXX 600 cayó un 5,8%, continuando su racha de pérdidas debido a las tensiones comerciales.",2,es
+"L'indice STOXX 600 a chuté de 5,8%, poursuivant sa série de pertes en raison des tensions commerciales.",2,fr
+"Der STOXX 600 Index fiel um 5,8% und setzte seine Verlustserie aufgrund der Handelskonflikte fort.",2,de
+"El rendimiento de los bonos alemanes a 10 años cayó al 0,25% en medio de la incertidumbre del mercado.",2,es
+"Le rendement des obligations allemandes à 10 ans est tombé à 0,25% en raison de l'incertitude du marché.",2,fr
+"Die Rendite der 10-jährigen deutschen Anleihen fiel auf 0,25% aufgrund der Marktunsicherheit.",2,de
+"La confianza del consumidor en la eurozona cayó a -14,5 en marzo de 2025, el nivel más bajo en tres meses.",2,es
+"La confiance des consommateurs dans la zone euro est tombée à -14,5 en mars 2025, son niveau le plus bas en trois mois.",2,fr
+"Das Verbrauchervertrauen in der Eurozone fiel im März 2025 auf -14,5, den niedrigsten Stand seit drei Monaten.",2,de
+"Las ventas minoristas en la eurozona disminuyeron un 0,5% en febrero de 2025, reflejando una menor confianza del consumidor.",2,es
+"Les ventes au détail dans la zone euro ont diminué de 0,5% en février 2025, reflétant une baisse de la confiance des consommateurs.",2,fr
+"Die Einzelhandelsumsätze in der Eurozone sanken im Februar 2025 um 0,5%, was auf ein geringeres Verbrauchervertrauen hindeutet.",2,de
+"El índice de producción industrial en la eurozona disminuyó un 0,2% en febrero de 2025, según datos recientes.",2,es
+"L'indice de la production industrielle dans la zone euro a diminué de 0,2% en février 2025, selon les données récentes.",2,fr
+"Der Industrieproduktionsindex in der Eurozone sank im Februar 2025 um 0,2%, laut aktuellen Daten.",2,de
+"El euro se depreció frente al dólar, cotizando a 1,08 en el mercado de divisas.",2,es
+"L'euro s'est déprécié face au dollar, s'échangeant à 1,08 sur le marché des changes.",2,fr
+"Der Euro wertete gegenüber dem Dollar ab und wurde am Devisenmarkt bei 1,08 gehandelt.",2,de
+"La tasa de desempleo en la eurozona aumentó a 6,5% en febrero de 2025, según Eurostat.",2,es
+"Le taux de chômage dans la zone euro a augmenté à 6,5% en février 2025, selon Eurostat.",2,fr
+"Die Arbeitslosenquote in der Eurozone stieg im Februar 2025 auf 6,5%, laut Eurostat.",2,de
+"El índice de precios al productor en la eurozona aumentó un 0,4% en marzo de 2025, indicando presiones inflacionarias.",2,es
+"L'indice des prix à la production dans la zone euro a augmenté de 0,4%",2,fr
+"La inflación en la eurozona cayó al 2,2% en marzo de 2025, acercándose al objetivo del BCE y aliviando las presiones sobre los consumidores.",1,es
+"L'inflation dans la zone euro est tombée à 2,2% en mars 2025, se rapprochant de l'objectif de la BCE et allégeant les pressions sur les consommateurs.",1,fr
+"Die Inflation in der Eurozone fiel im März 2025 auf 2,2% und näherte sich dem Ziel der EZB, was den Druck auf die Verbraucher verringert.",1,de
+"La tasa de desempleo en la eurozona alcanzó un nuevo mínimo histórico del 6,1% en febrero de 2025, reflejando un mercado laboral robusto.",1,es
+"Le taux de chômage dans la zone euro a atteint un nouveau plus bas historique de 6,1% en février 2025, reflétant un marché du travail robuste.",1,fr
+"Die Arbeitslosenquote in der Eurozone erreichte im Februar 2025 mit 6,1% ein neues historisches Tief, was auf einen robusten Arbeitsmarkt hinweist.",1,de
+"El índice de confianza económica de la eurozona aumentó a 95,2 en enero de 2025, señalando una mejora en el sentimiento empresarial.",1,es
+"L'indice de confiance économique de la zone euro a augmenté à 95,2 en janvier 2025, indiquant une amélioration du sentiment des entreprises.",1,fr
+"Der Wirtschaftsvertrauensindex der Eurozone stieg im Januar 2025 auf 95,2 und signalisiert eine Verbesserung des Geschäftsklimas.",1,de
+"El crecimiento del PIB de la eurozona se prevé que alcance el 1,6% en 2025, cerrando la brecha con Estados Unidos.",1,es
+"La croissance du PIB de la zone euro devrait atteindre 1,6% en 2025, réduisant l'écart avec les États-Unis.",1,fr
+"Das BIP-Wachstum der Eurozone wird für 2025 auf 1,6% prognostiziert, wodurch die Lücke zu den USA geschlossen wird.",1,de
+"El índice STOXX 600 mostró resiliencia en medio de tensiones comerciales, reflejando la fortaleza de las empresas europeas.",1,es
+"L'indice STOXX 600 a montré une résilience face aux tensions commerciales, reflétant la solidité des entreprises européennes.",1,fr
+Der STOXX 600 Index zeigte Widerstandsfähigkeit trotz Handelskonflikten und spiegelt die Stärke europäischer Unternehmen wider.,1,de
+La Comisión Europea lanzó una consulta para promover la cooperación industrial en la adquisición y reciclaje de materias primas críticas.,1,es
+La Commission européenne a lancé une consultation pour promouvoir la coopération industrielle dans l'acquisition et le recyclage de matières premières critiques.,1,fr
+"Die Europäische Kommission hat eine Konsultation gestartet, um die industrielle Zusammenarbeit bei der Beschaffung und dem Recycling kritischer Rohstoffe zu fördern.",1,de
+"La confianza del consumidor en la eurozona mejoró en marzo de 2025, indicando una perspectiva más optimista de los hogares.",1,es
+"La confiance des consommateurs dans la zone euro s'est améliorée en mars 2025, indiquant une perspective plus optimiste des ménages.",1,fr
+Das Verbrauchervertrauen in der Eurozone verbesserte sich im März 2025 und deutet auf eine optimistischere Sicht der Haushalte hin.,1,de
+Las acciones europeas cayeron a un mínimo de 16 meses debido a los temores de una guerra comercial global.,2,es
+Les actions européennes ont chuté à un plus bas de 16 mois en raison des craintes d'une guerre commerciale mondiale.,2,fr
+Europäische Aktien fielen auf ein 16-Monats-Tief aufgrund von Befürchtungen eines globalen Handelskriegs.,2,de
+"El índice bancario europeo cayó un 4,8%, entrando en territorio bajista por temor a una recesión inducida por aranceles.",2,es
+"L'indice bancaire européen a chuté de 4,8%, entrant en territoire baissier par crainte d'une récession induite par les tarifs.",2,fr
+"Der europäische Bankenindex fiel um 4,8% und geriet aufgrund von Rezessionsängsten durch Zölle in einen Bärenmarkt.",2,de
+"El crecimiento del PIB de la eurozona se proyecta en un 0,9% para 2025, reflejando una desaceleración económica.",2,es
+"La croissance du PIB de la zone euro est projetée à 0,9% pour 2025, reflétant un ralentissement économique.",2,fr
+"Das BIP-Wachstum der Eurozone wird für 2025 auf 0,9% prognostiziert, was eine wirtschaftliche Verlangsamung widerspiegelt.",2,de
+"El índice STOXX 600 cayó un 5,8%, continuando su racha de pérdidas debido a las tensiones comerciales.",2,es
+"L'indice STOXX 600 a chuté de 5,8%, poursuivant sa série de pertes en raison des tensions commerciales.",2,fr
+"Der STOXX 600 Index fiel um 5,8% und setzte seine Verlustserie aufgrund der Handelskonflikte fort.",2,de
+"El rendimiento de los bonos alemanes a 10 años cayó al 0,25% en medio de la incertidumbre del mercado.",2,es
+"Le rendement des obligations allemandes à 10 ans est tombé à 0,25% en raison de l'incertitude du marché.",2,fr
+"Die Rendite der 10-jährigen deutschen Anleihen fiel auf 0,25% aufgrund der Marktunsicherheit.",2,de
+La confianza del inversor en la eurozona cayó a su nivel más bajo en más de un año debido a los aranceles de EE.UU.,2,es
+La confiance des investisseurs dans la zone euro est tombée à son niveau le plus bas depuis plus d'un an en raison des tarifs américains.,2,fr
+Das Investorenvertrauen in der Eurozone fiel auf den niedrigsten Stand seit über einem Jahr aufgrund der US-Zölle.,2,de
+Las acciones de defensa europeas registraron su mayor caída diaria desde abril de 2020 debido a preocupaciones sobre una recesión global.,2,es
+Les actions de la défense européenne ont enregistré leur plus forte baisse quotidienne depuis avril 2020 en raison des craintes d'une récession mondiale.,2,fr
+Europäische Verteidigungsaktien verzeichneten ihren größten Tagesrückgang seit April 2020 aufgrund von Befürchtungen einer globalen Rezession.,2,de
+"El índice de volatilidad de la eurozona alcanzó su nivel más alto desde agosto, reflejando la creciente incertidumbre del mercado.",2,es
+"L'indice de volatilité de la zone euro a atteint son niveau le plus élevé depuis août, reflétant l'incertitude croissante du marché.",2,fr
+"Der Volatilitätsindex der Eurozone erreichte den höchsten Stand seit August, was die zunehmende Marktunsicherheit widerspiegelt.",2,de
+Las acciones europeas confirmaron una corrección después de caer más del 10% desde su máximo histórico debido a las preocupaciones arancelarias.,2,es
+Les actions européennes ont confirmé une correction après avoir chuté de plus de 10% depuis leur record historique en raison des préoccupations tarifaires.,2,fr
+"Europäische Aktien bestätigten eine Korrektur, nachdem sie aufgrund von Zollbedenken um mehr als 10% von ihrem Allzeithoch gefallen waren.",2,de
+Los bancos europeos extendieron sus pérdidas en medio de una venta masiva provocada por los aranceles de EE.UU.,2,es
+Les banques européennes ont prolongé leurs pertes au milieu d'une vente massive provoquée par les tarifs américains.,2,fr
+Europäische Banken verlängerten ihre Verluste inmitten eines durch US-Zölle ausgelösten Ausverkaufs.,2,de
+"El índice de confianza económica de la eurozona cayó a -19,5 en abril, su nivel más bajo desde octubre de 2023.",2,es
+"L'indice de confiance économique de la zone euro est tombé à -19,5 en avril, son niveau le plus bas depuis octobre 2023.",2,fr
