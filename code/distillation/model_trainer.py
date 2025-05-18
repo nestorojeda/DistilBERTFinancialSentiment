@@ -11,6 +11,8 @@ from transformers import (
 from datasets import DatasetDict
 from data_manager import get_tokenized_lang_dataset # Import from the new module
 from evaluation import compute_metrics # Import from the new module
+from transformers import EarlyStoppingCallback
+from collections import Counter
 
 module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 if module_path not in sys.path:
@@ -35,7 +37,7 @@ class CustomTrainer(Trainer):
         loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
         return (loss, outputs) if return_outputs else loss
 
-def get_hyperparameters(train_dataset_size: int, batch_size=32, number_of_epochs=4):
+def get_hyperparameters(train_dataset_size: int, batch_size=16, number_of_epochs=8):
     """Calculates logging steps and warmup steps based on dataset size and batch size."""
     if batch_size <= 0:
         raise ValueError("batch_size must be positive")
@@ -79,11 +81,17 @@ def get_training_args(model_name: str, lang: str, batch_size: int, number_of_epo
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
         gradient_accumulation_steps=2,
-        fp16=torch.cuda.is_available(), # Enable fp16 only if CUDA is available
-        run_name=output_dir_name
+        fp16=True,
+        no_cuda=False,
+        dataloader_pin_memory=True,
+        seed=42,  # Ensures reproducibility
+        greater_is_better=True,  # Set according to your metric
+        logging_first_step=True,  # Log the first step for early diagnostics
+        disable_tqdm=False,  # Show progress bar
+        remove_unused_columns=True,
     )
 
-def fine_tune_language(model_name: str, dataset: DatasetDict, lang: str):
+def fine_tune_language(model_name: str, dataset: DatasetDict, lang: str, device: torch.device) -> AutoModelForSequenceClassification:
     """Fine-tunes a model for a specific language."""
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=3)
@@ -120,6 +128,13 @@ def fine_tune_language(model_name: str, dataset: DatasetDict, lang: str):
     train_dataset = train_dataset.shuffle(seed=42) # Use a fixed seed
     eval_dataset = eval_dataset.shuffle(seed=42)
 
+    labels = train_dataset['labels']
+    counts = Counter(labels)
+    total = sum(counts.values())
+    weights = torch.tensor([total/counts[i] for i in range(3)], dtype=torch.float)
+    weights = weights / weights.sum()  # normalize
+    weight_tensor = weights.to(device)
+
     # Define class weights (consider calculating these based on data distribution)
     # Example: Using predefined weights
     class_weights = torch.tensor([2.2643, 0.6222, 1.0515]) # Adjust weights as needed
@@ -130,9 +145,10 @@ def fine_tune_language(model_name: str, dataset: DatasetDict, lang: str):
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        weight_tensor=class_weights,
+        weight_tensor=weight_tensor,
         data_collator=data_collator,
-        compute_metrics=compute_metrics
+        compute_metrics=compute_metrics,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=2)]
     )
 
     print(f"Starting training for {lang}...")

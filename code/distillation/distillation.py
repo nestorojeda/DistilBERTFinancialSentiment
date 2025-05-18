@@ -148,10 +148,10 @@ class DistillationTrainer:
             global_step = self.train_epoch(epoch, global_step)
             
             # Optional: Add evaluation after each epoch
-            # from evaluation import evaluate # Import here to avoid circular import
-            # eval_metrics = evaluate(self.student_model, self.eval_loader, self.device)
-            # self._log(f"Epoch {epoch+1} Evaluation Metrics", type="EVAL", metrics=eval_metrics)
-            # self.writer.add_scalar("Evaluation Accuracy", eval_metrics['accuracy'], global_step)
+            from evaluation import evaluate # Import here to avoid circular import
+            eval_metrics = evaluate(self.student_model, self.eval_loader, self.device)
+            self._log(f"Epoch {epoch+1} Evaluation Metrics", type="EVAL", metrics=eval_metrics)
+            self.writer.add_scalar("Evaluation Accuracy", eval_metrics['accuracy'], global_step)
 
         self._log("Distillation training finished.", type="TRAINING_END", 
                  steps_completed=global_step, final_epoch=self.num_epochs)
