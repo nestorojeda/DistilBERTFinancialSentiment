@@ -84,7 +84,3 @@ Example usage of the library can be found in these notebooks:
 - scikit-learn
 - yfinance (for market data)
 - pygooglenews (for news data)
-
-## Authors
-
-DistilBERT Financial Sentiment Team
