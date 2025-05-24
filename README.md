@@ -109,7 +109,7 @@ import os
 sys.path.append(os.path.join(os.getcwd(), 'code', 'volatility_analysis'))
 from volatility_lib import *
 
-# Run the volatility analysis pipeline
+# Run the volatility analysis pipeline with sentiment
 results = run_volatility_pipeline(
     news_df=news_df,                # DataFrame with news data
     stock_data=market_data,         # DataFrame with stock market data
@@ -117,7 +117,20 @@ results = run_volatility_pipeline(
     cut_date="2023-12-01",          # Train/test split date
     output_dir="./news",            # Output directory
     epochs=50,                      # Training epochs
+    use_sentiment=True,             # Use sentiment inference (default)
     verbose=True                    # Show progress
+)
+
+# Run volatility analysis without sentiment (volatility-only model)
+results_no_sentiment = run_volatility_pipeline(
+    news_df=news_df,
+    stock_data=market_data,
+    market_name="FTSE 100",
+    cut_date="2023-12-01",
+    output_dir="./news",
+    epochs=50,
+    use_sentiment=False,            # Skip sentiment - use only volatility history
+    verbose=True
 )
 ```
 

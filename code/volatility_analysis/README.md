@@ -10,7 +10,8 @@ This library provides tools for analyzing financial market volatility in relatio
 ## Features
 
 - Analyze the relationship between news sentiment and market volatility
-- Predict future volatility using LSTM neural networks
+- Predict future volatility using LSTM neural networks with or without sentiment data
+- Configurable model training: use sentiment-enhanced or volatility-only predictions
 - Create high-quality visualizations of financial data
 - Support for different market indices (FTSE, IBEX, DAX, CAC, etc.)
 
@@ -19,7 +20,7 @@ This library provides tools for analyzing financial market volatility in relatio
 ```python
 from code.volatility_analysis import run_volatility_pipeline
 
-# Run the complete volatility analysis pipeline
+# Run the complete volatility analysis pipeline with sentiment
 results = run_volatility_pipeline(
     news_df=news_df,              # DataFrame with news data
     stock_data=market_data,       # DataFrame with stock market data
@@ -30,7 +31,23 @@ results = run_volatility_pipeline(
     epochs=50,                    # Number of training epochs
     batch_size=16,                # Batch size for training
     learning_rate=0.001,          # Learning rate for optimizer
+    use_sentiment=True,           # Use sentiment inference for predictions
     verbose=True                  # Print progress information
+)
+
+# Run volatility analysis WITHOUT sentiment (only previous volatility)
+results_no_sentiment = run_volatility_pipeline(
+    news_df=news_df,
+    stock_data=market_data,
+    market_name="FTSE 100",
+    cut_date="2023-12-01",
+    output_dir="../news",
+    seq_len=10,
+    epochs=50,
+    batch_size=16,
+    learning_rate=0.001,
+    use_sentiment=False,          # Skip sentiment - use only volatility history
+    verbose=True
 )
 ```
 

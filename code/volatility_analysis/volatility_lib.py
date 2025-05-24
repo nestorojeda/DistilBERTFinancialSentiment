@@ -118,7 +118,8 @@ def split_data(merged_df: pd.DataFrame, cut_date: str) -> Tuple[pd.DataFrame, pd
         Tuple of (training_data, testing_data)
     """
     # Fill NaN values in sentiment with 0 (neutral sentiment)
-    merged_df['sentiment'] = merged_df['sentiment'].fillna(0)
+    if 'sentiment' in merged_df.columns:
+        merged_df['sentiment'] = merged_df['sentiment'].fillna(0)
     train = merged_df[merged_df['date'] < cut_date]
     test = merged_df[merged_df['date'] >= cut_date]
     return train, test
@@ -571,7 +572,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
                            epochs: int = 50,
                            batch_size: int = 16,
                            learning_rate: float = 0.001,
-                           verbose: bool = True) -> Dict:
+                           use_sentiment: bool = True,                           verbose: bool = True) -> Dict:
     """
     Run the entire volatility analysis pipeline.
     
@@ -585,6 +586,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         epochs: Number of epochs for LSTM training.
         batch_size: Batch size for LSTM training.
         learning_rate: Learning rate for optimizer.
+        use_sentiment: Whether to use sentiment inference for predictions. If False, only uses previous volatility.
         verbose: Whether to print progress information.
     
     Returns:
@@ -608,27 +610,41 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     merged = pd.merge(news_daily, stock_data, left_on='date', right_on='Date', how='inner')
     merged['Volatility_Smooth'] = merged['Volatility'].rolling(window=5, min_periods=1, center=True).mean()
     merged.rename(columns={'title': 'count',}, inplace=True)
-    
-    # Clean up the merged dataframe
+      # Clean up the merged dataframe
     if 'Date' in merged.columns:
         merged.drop(columns=['Date'], inplace=True)
     
-    # Initialize sentiment model
-    tokenizer, model = initialize_sentiment_model()
-    
-    # Calculate sentiment for each date
-    if verbose:
-        print("Calculating sentiment scores...")
-    merged['sentiment'] = merged['date'].apply(
-        lambda date: calculate_sentiment(date, news_df, tokenizer, model, verbose=False))
+    # Conditionally initialize sentiment model and calculate sentiment
+    if use_sentiment:
+        # Initialize sentiment model
+        tokenizer, model = initialize_sentiment_model()
+        
+        # Calculate sentiment for each date
+        if verbose:
+            print("Calculating sentiment scores...")
+        merged['sentiment'] = merged['date'].apply(
+            lambda date: calculate_sentiment(date, news_df, tokenizer, model, verbose=False))
+        
+        # Move the sentiment to the next day to align with volatility
+        merged['sentiment'] = merged['sentiment'].shift(1)
+        
+        # Set feature columns to include sentiment
+        feature_cols = ['Volatility_Smooth', 'sentiment']
+    else:
+        # Skip sentiment calculation and use only volatility features
+        if verbose:
+            print("Skipping sentiment calculation (use_sentiment=False)...")
+        # Set a dummy sentiment column or feature columns without sentiment
+        feature_cols = ['Volatility_Smooth']
     
     # Plot volatility and news count
     news_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_news_count_plot.png")
     plot_volatility_news_count(merged, market_name, news_plot_path, show_plot=verbose)
     
-    # Plot volatility and sentiment
-    sentiment_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_sentiment_plot.png")
-    plot_volatility_sentiment(merged, market_name, sentiment_plot_path, show_plot=verbose)
+    # Plot volatility and sentiment (only if using sentiment)
+    if use_sentiment:
+        sentiment_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_sentiment_plot.png")
+        plot_volatility_sentiment(merged, market_name, sentiment_plot_path, show_plot=verbose)
     
     # Split data for LSTM model
     if verbose:
@@ -639,7 +655,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     if verbose:
         print("Preparing data for LSTM model...")
     (X_train_seq, y_train_seq, X_test_seq, y_test_seq, 
-     scaler_x, scaler_y, scaler_y_single) = prepare_lstm_data(train, test, seq_len=seq_len)
+     scaler_x, scaler_y, scaler_y_single) = prepare_lstm_data(train, test, feature_cols=feature_cols, seq_len=seq_len)
     
     # Train LSTM model
     if verbose:
