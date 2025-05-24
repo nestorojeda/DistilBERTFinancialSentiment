@@ -60,14 +60,21 @@ The library provides the following main functions:
 - `initialize_sentiment_model`: Initialize the sentiment analysis model
 - `infer_sentiment`: Analyze sentiment of a given text
 - `calculate_sentiment`: Calculate sentiment for a specific date
+- `enhanced_sentiment_calculation`: Calculate weighted sentiment based on confidence scores
 - `split_data`: Split data into training and testing sets
 - `prepare_lstm_data`: Prepare data for LSTM model training
 - `create_sequences`: Create input sequences for LSTM
+- `create_validation_split`: Create validation split from training data
+
+### Feature Engineering Functions
+
+- `add_technical_indicators`: Add technical analysis indicators to market data
+- `improve_sentiment_features`: Create additional sentiment-derived features
 
 ### Model Functions
 
-- `LSTMVolatility`: LSTM model class for volatility prediction
-- `train_lstm_model`: Train the LSTM model
+- `ImprovedLSTMVolatility`: Enhanced LSTM model with attention and dropout for volatility prediction
+- `train_with_early_stopping`: Train model with early stopping and learning rate scheduling
 - `evaluate_lstm_model`: Evaluate model performance
 
 ### Visualization Functions
