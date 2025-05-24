@@ -130,7 +130,7 @@ def split_data(merged_df: pd.DataFrame, cut_date: str) -> Tuple[pd.DataFrame, pd
 
 
 # Prepare data for LSTM model
-def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame, 
+def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame, val: pd.DataFrame,
                      feature_cols: List[str] = ['Volatility_Smooth', 'sentiment'], 
                      target_col: str = 'Volatility_Smooth', 
                      seq_len: int = 10) -> Tuple:
@@ -161,35 +161,39 @@ def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame,
     # Select features and target
     train_data = train[feature_cols + [target_col]].copy()
     test_data = test[feature_cols + [target_col]].copy()
-
+    val_data = val[feature_cols + [target_col]].copy() if not val.empty else pd.DataFrame(columns=feature_cols + [target_col])
+    
     # Normalize features and target
     scaler_x = MinMaxScaler()
     scaler_y = MinMaxScaler()
     scaler_y_single = MinMaxScaler()  # For single column output
-    print(f"Feature columns: {feature_cols}, Target column: {target_col}")
-    print(f"Train data shape: {train_data.shape}, Test data shape: {test_data.shape}")
 
     X_train = scaler_x.fit_transform(train_data[feature_cols])
-    y_train = scaler_y.fit_transform(train_data[[target_col]])
-    print(f"Scaler X n_features_in_: {scaler_x.n_features_in_}")
-    
+    y_train = scaler_y.fit_transform(train_data[[target_col]])\
+        
     # Fit the single-column scaler on the target column values as a 1D array
     scaler_y_single.fit(train_data[[target_col]].values.reshape(-1, 1))
 
     X_test = scaler_x.transform(test_data[feature_cols])
     y_test = scaler_y.transform(test_data[[target_col]])
 
+    X_val = scaler_x.transform(val_data[feature_cols])
+    y_val = scaler_y.transform(val_data[[target_col]])
+
     # Create sequences for LSTM
     X_train_seq, y_train_seq = create_sequences(X_train, y_train, seq_len)
     X_test_seq, y_test_seq = create_sequences(X_test, y_test, seq_len)
+    X_val_seq, y_val_seq = create_sequences(X_val, y_val, seq_len)
 
     # Convert to torch tensors
     X_train_seq = torch.tensor(X_train_seq, dtype=torch.float32)
     y_train_seq = torch.tensor(y_train_seq, dtype=torch.float32)
     X_test_seq = torch.tensor(X_test_seq, dtype=torch.float32)
     y_test_seq = torch.tensor(y_test_seq, dtype=torch.float32)
+    X_val_seq = torch.tensor(X_val_seq, dtype=torch.float32)
+    y_val_seq = torch.tensor(y_val_seq, dtype=torch.float32)
 
-    return (X_train_seq, y_train_seq, X_test_seq, y_test_seq, 
+    return (X_train_seq, y_train_seq, X_test_seq, y_test_seq, X_val_seq, y_val_seq,
             scaler_x, scaler_y, scaler_y_single)
 
 
@@ -683,56 +687,9 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
 # Prepare LSTM data with validation set
     if verbose:
         print("Preparing data for LSTM model...")
-    (X_train_seq, y_train_seq, X_test_seq, y_test_seq, 
-     scaler_x, scaler_y, scaler_y_single) = prepare_lstm_data(train_split, test, feature_cols=feature_cols, seq_len=seq_len)
+    (X_train_seq, y_train_seq, X_test_seq, y_test_seq, X_val_seq, y_val_seq, 
+     scaler_x, scaler_y, scaler_y_single) = prepare_lstm_data(train_split, test, val_split, feature_cols=feature_cols, seq_len=seq_len)
       # Prepare validation data using the training scalers to maintain consistency
-    if verbose:
-        print("Preparing validation data...")
-      # Double check that validation data has the same feature columns as training
-    if verbose:
-        print(f"Train features: {len(feature_cols)}, Val split columns: {val_split[feature_cols].shape[1]}")
-    
-    # Ensure validation split has all required columns
-    missing_cols = [col for col in feature_cols if col not in val_split.columns]
-    if missing_cols:
-        if verbose:
-            print(f"Warning: Missing columns in validation split: {missing_cols}")
-        # Add missing columns with zeros (will be replaced with means)
-        for col in missing_cols:
-            val_split[col] = 0
-    
-    # Extract validation features and target
-    X_val_features = val_split[feature_cols].values
-    y_val_features = val_split[['Volatility_Smooth']].values
-    
-    # Check for NaN values and handle them
-    if np.isnan(X_val_features).any():
-        # Fill NaN values with the mean from training data
-        for i, col in enumerate(feature_cols):
-            col_mean = train_split[col].mean()
-            X_val_features[np.isnan(X_val_features[:, i]), i] = col_mean
-    
-    if np.isnan(y_val_features).any():
-        y_val_mean = train_split['Volatility_Smooth'].mean()
-        y_val_features[np.isnan(y_val_features)] = y_val_mean
-    
-    # Apply the same scaling as training data (use training scalers)
-    if verbose:
-        print(f"X_val_features shape: {X_val_features.shape}, Scaler n_features_in_: {scaler_x.n_features_in_}")
-        print(f"Feature columns used for training: {feature_cols}")
-    
-    # Ensure X_val_features has the same number of features as what scaler_x was fitted with
-    if X_val_features.shape[1] != scaler_x.n_features_in_:
-        raise ValueError(f"Validation data has {X_val_features.shape[1]} features, but scaler was fitted with {scaler_x.n_features_in_} features. Check for data consistency.")
-        
-    X_val_scaled = scaler_x.transform(X_val_features)
-    y_val_scaled = scaler_y.transform(y_val_features)
-    
-    # Create sequences for validation
-    X_val_seq, y_val_seq = create_sequences(X_val_scaled, y_val_scaled, seq_len)
-    X_val_seq = torch.tensor(X_val_seq, dtype=torch.float32)
-    y_val_seq = torch.tensor(y_val_seq, dtype=torch.float32)
-    
     # Train LSTM model with early stopping
     if verbose:
         print(f"Training enhanced LSTM model with early stopping...")
