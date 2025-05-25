@@ -20,7 +20,6 @@ from datetime import datetime
 from typing import List, Dict, Tuple, Optional, Any
 from volatility_plotter import VolatilityPlotter
 
-
 # Run the entire volatility analysis pipeline
 def run_volatility_pipeline(news_df: pd.DataFrame, 
                            stock_data: pd.DataFrame,
@@ -120,7 +119,8 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         merged['sentiment_3d'] = merged['sentiment_3d'].shift(1)
         
         # Add sentiment features 
-        sentiment_features = ['sentiment', 'sentiment_3d', 'sentiment_vol', 'news_sentiment_interaction']
+        # sentiment_features = ['sentiment', 'sentiment_3d', 'sentiment_vol', 'news_sentiment_interaction']
+        sentiment_features = ['sentiment', 'sentiment_3d']
     else:
         # Skip sentiment calculation and use technical indicators
         if verbose:
@@ -157,8 +157,10 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     if verbose:
         print(f"Splitting data at {cut_date}...")
     train, test, val = split_data(merged, cut_date)
-    
-    # Create validation split from training data
+
+    # Save merged data to CSV
+    merged_csv_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_merged_data.csv")
+    merged.to_csv(merged_csv_path, index=False)    
     
     # Prepare LSTM data with validation set
     if verbose:
@@ -212,53 +214,6 @@ def initialize_sentiment_model(model_name: str = "nojedag/xlm-roberta-finetuned-
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(model_name)
     return tokenizer, model
-
-
-# Function to infer sentiment from text
-def infer_sentiment(text: str, tokenizer: Any, model: Any) -> int:
-    """
-    Infer sentiment from a given text.
-    
-    Args:
-        text: The text to analyze.
-        tokenizer: The tokenizer to use for preprocessing.
-        model: The model to use for sentiment analysis.
-    
-    Returns:
-        An integer representing sentiment: -1 (negative), 0 (neutral), or 1 (positive).
-    """
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-    outputs = model(**inputs)
-    logits = outputs.logits
-    probabilities = logits.softmax(dim=1)
-    sentiment = probabilities.argmax(dim=1).item()
-    # Map sentiment values (0, 1, 2) to (-1, 0, 1)
-    if sentiment == 2:
-        sentiment = -1
-    return sentiment
-
-
-# Calculate sentiment for a specific date
-def calculate_sentiment(date: datetime, news_df: pd.DataFrame, tokenizer: Any, model: Any, verbose: bool = False) -> Optional[float]:
-    """
-    Calculate average sentiment for all news articles on a given date.
-    
-    Args:
-        date: The date to calculate sentiment for.
-        news_df: DataFrame containing news data.
-        tokenizer: The tokenizer to use for sentiment analysis.
-        model: The model to use for sentiment analysis.
-        verbose: Whether to print detailed sentiment information.
-    
-    Returns:
-        Average sentiment score or None if no news articles for the date.
-    """
-    titles = get_titles(date, news_df)
-    if not titles:
-        return None
-    sentiments = [infer_sentiment(title, tokenizer, model) for title in titles]
-    return sum(sentiments) / len(sentiments)
-
 
 # Split data into training and testing sets
 def split_data(merged_df: pd.DataFrame, cut_date: str, val_ratio: float = 0.2 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -433,40 +388,6 @@ def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame, val: pd.DataFrame
     return (X_train_seq, y_train_seq, X_test_seq, y_test_seq, X_val_seq, y_val_seq,
             scaler_x, scaler_y, scaler_y_single)
 
-# LSTM Model for Volatility Prediction with Attention and Dropout
-class ImprovedLSTMVolatility(nn.Module):
-    """Enhanced LSTM with attention and dropout."""
-    def __init__(self, input_size: int, hidden_size: int = 64, num_layers: int = 2, 
-                 output_size: int = 1, dropout: float = 0.2):
-        super(ImprovedLSTMVolatility, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, 
-                           batch_first=True, dropout=dropout if num_layers > 1 else 0)
-        self.dropout = nn.Dropout(dropout)
-        self.attention = nn.MultiheadAttention(hidden_size, num_heads=4, batch_first=True)
-        self.fc1 = nn.Linear(hidden_size, hidden_size // 2)
-        self.fc2 = nn.Linear(hidden_size // 2, output_size)
-        self.relu = nn.ReLU()
-        self.layer_norm = nn.LayerNorm(hidden_size)
-    
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # LSTM layer
-        lstm_out, _ = self.lstm(x)
-        
-        # Apply attention
-        attn_out, _ = self.attention(lstm_out, lstm_out, lstm_out)
-        attn_out = self.layer_norm(attn_out + lstm_out)  # Residual connection
-        
-        # Take the last output
-        out = attn_out[:, -1, :]
-        out = self.dropout(out)
-        
-        # Fully connected layers
-        out = self.relu(self.fc1(out))
-        out = self.dropout(out)
-        out = self.fc2(out)
-        
-        return out
-
 # Add these functions after the existing sentiment functions
 
 def add_technical_indicators(stock_data: pd.DataFrame) -> pd.DataFrame:
@@ -503,10 +424,10 @@ def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
     merged_df['sentiment_3d'] = merged_df['sentiment'].rolling(window=3, min_periods=1).mean()
     
     # Sentiment volatility (rolling std)
-    merged_df['sentiment_vol'] = merged_df['sentiment'].rolling(window=5, min_periods=1).std()
+    # merged_df['sentiment_vol'] = merged_df['sentiment'].rolling(window=5, min_periods=1).std()
     
     # News volume impact
-    merged_df['news_sentiment_interaction'] = merged_df['count'] * merged_df['sentiment']
+    # merged_df['news_sentiment_interaction'] = merged_df['count'] * merged_df['sentiment']
     
     return merged_df
 
@@ -547,7 +468,7 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
                               X_val_seq: torch.Tensor, y_val_seq: torch.Tensor,
                               input_size: int, output_size: int, 
                               epochs: int = 100, patience: int = 10, 
-                              learning_rate: float = 0.001, verbose: bool = True) -> nn.Module:
+                              learning_rate: float = 0.001, verbose: bool = True, model: str = 'simple') -> nn.Module:
     """
     Train model with early stopping and learning rate scheduling.
     
@@ -566,7 +487,12 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
     Returns:
         Trained LSTM model.
     """
-    model = ImprovedLSTMVolatility(input_size, output_size=output_size)
+    if model == 'simple':
+        from models.SimpleLSTM import LSTMVolatility
+        model = LSTMVolatility(input_size, output_size=output_size)
+    elif model == 'improved':
+        from models.ImprovedLSTM import ImprovedLSTMVolatility
+        model = ImprovedLSTMVolatility(input_size, output_size=output_size)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=5, factor=0.5)

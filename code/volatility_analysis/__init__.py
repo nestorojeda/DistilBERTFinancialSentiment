@@ -3,7 +3,7 @@ Init file for the volatility analysis package.
 This makes the package importable in Python.
 """
 
-from .volatility_lib import *
+from .volatility_pipeline import *
 
 __all__ = [
     # Data preparation and sentiment analysis
