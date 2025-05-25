@@ -23,6 +23,8 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import os
 from datetime import datetime
 from typing import List, Dict, Tuple, Optional, Union, Any
+from scipy import stats
+from matplotlib.patches import Rectangle
 
 
 # Initialize sentiment analysis model and tokenizer
@@ -429,7 +431,6 @@ def plot_volatility_sentiment(merged_df: pd.DataFrame,
     """
     # Define sentiment colors and labels
     label_map = {"negative": -1, "neutral": 0, "positive": 1}
-    sentiment_colors = {-1: "#d7263d", 0: "#ffd166", 1: "#06d6a0"}  # Red for negative, yellow for neutral, green for positive
     inverse_label_map = {v: k for k, v in label_map.items()}
 
     # Create a figure with two y-axes
@@ -446,20 +447,18 @@ def plot_volatility_sentiment(merged_df: pd.DataFrame,
         if pd.isna(row['sentiment']):
             continue
         else:
-            sentiment_value = int(row['sentiment'])
-            # Plot sentiment markers directly on the volatility line
-            if (sentiment_value > -2) and (sentiment_value < 2):
-                # Use the sentiment value to determine the color
-                ax2.scatter(row['date'], row['Volatility_Smooth'], 
-                            color=sentiment_colors[sentiment_value], 
-                            s=100, 
-                            zorder=5,
-                            edgecolor='white', 
-                            linewidth=1.5)
+            sentiment_value = row['sentiment']
+            # Use the sentiment value to determine the color
+            ax2.scatter(row['date'], row['Volatility_Smooth'], 
+                        color=get_sentiment_color(sentiment_value), 
+                        s=100, 
+                        zorder=5,
+                        edgecolor='white', 
+                        linewidth=1.5)
 
     # Add colored marker samples for the legend
     for sentiment_value in [-1, 0, 1]:
-        ax1.scatter([], [], color=sentiment_colors[sentiment_value], 
+        ax1.scatter([], [], color=get_sentiment_color(sentiment_value), 
                     label=f"{inverse_label_map[sentiment_value].capitalize()} Sentiment",
                     s=100, edgecolor='white', linewidth=1.5)
 
@@ -506,6 +505,33 @@ def plot_volatility_sentiment(merged_df: pd.DataFrame,
         plt.show()
     else:
         plt.close()
+
+def get_sentiment_color(sentiment_value: float) -> str:
+        """
+        Get RGB color for a sentiment value using the same gradient as plot_sentiment_distribution.
+        
+        Args:
+            sentiment_value: Sentiment score between -1 and 1.
+        
+        Returns:
+            Hex color string representing the sentiment color.
+        """
+        # Normalize sentiment to [0, 1] range for color mapping
+        # Map -1 to 0 (red), 0 to 0.5 (yellow), 1 to 1 (green)
+        normalized_value = (sentiment_value + 1) / 2
+        
+        if normalized_value <= 0.5:  # -1 to 0 range: red to yellow
+            red = 1.0
+            green = normalized_value * 2  # 0 to 1
+            blue = 0.0
+        else:  # 0 to 1 range: yellow to green
+            red = 2 * (1 - normalized_value)  # 1 to 0
+            green = 1.0
+            blue = 0.0
+
+        rgb = (red, green, blue)    
+        return '#' + ''.join(f'{int(c * 255):02x}' for c in rgb)
+
 
 
 # Plot predicted vs actual volatility
@@ -637,6 +663,11 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         merged['sentiment'] = merged['date'].apply(
             lambda date: enhanced_sentiment_calculation(date, news_df, tokenizer, model, verbose=False))
         
+        # Plot sentiment distribution
+        if verbose:
+            print("Plotting sentiment distribution...")
+            plot_sentiment_distribution(merged, market_name, output_dir, show_plot=verbose)
+         
         # Add sentiment features
         merged = improve_sentiment_features(merged)
         
@@ -670,12 +701,11 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     if verbose:
         print(f"Final feature columns for model: {feature_cols}")
     
-    # Plot volatility and news count
-    news_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_news_count_plot.png")
-    plot_volatility_news_count(merged, market_name, news_plot_path, show_plot=verbose)
-    
-    # Plot volatility and sentiment (only if using sentiment)
     if use_sentiment:
+        # Plot volatility and news count
+        news_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_news_count_plot.png")
+        plot_volatility_news_count(merged, market_name, news_plot_path, show_plot=verbose)
+    
         sentiment_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_sentiment_plot.png")
         plot_volatility_sentiment(merged, market_name, sentiment_plot_path, show_plot=verbose)
     
@@ -873,3 +903,73 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
     # Load best model
     model.load_state_dict(best_model_state)
     return model
+
+def plot_sentiment_distribution(merged_df: pd.DataFrame, market_name: str, 
+                                       save_path: Optional[str] = None, show_plot: bool = True) -> None:
+            """
+            Plot sentiment distribution with gradient colors.
+            
+            Args:
+                merged_df: DataFrame containing sentiment data.
+                market_name: Name of the market for plot title.
+                save_path: Path to save the plot image, or None to skip saving.
+                show_plot: Whether to display the plot.
+            """
+            # Create a figure for sentiment distribution with custom colors
+            plt.figure(figsize=(10, 6))
+            
+            # Create histogram data
+            counts, bins, patches = plt.hist(merged_df['sentiment'].dropna(), bins=30, alpha=0.7, edgecolor='black')
+            
+            # Apply gradient colors based on bin centers
+            bin_centers = (bins[:-1] + bins[1:]) / 2
+            
+            # Normalize bin centers to [0, 1] range for color mapping
+            # Map -1 to 0 (red), 0 to 0.5 (yellow), 1 to 1 (green)
+            normalized_centers = (bin_centers + 1) / 2
+            
+            # Apply colors to patches
+            for i, (patch, center) in enumerate(zip(patches, normalized_centers)):
+                if center <= 0.5:  # -1 to 0 range: red to yellow
+                    red = 1.0
+                    green = center * 2  # 0 to 1
+                    blue = 0.0
+                else:  # 0 to 1 range: yellow to green
+                    red = 2 * (1 - center)  # 1 to 0
+                    green = 1.0
+                    blue = 0.0
+                    
+                patch.set_facecolor((red, green, blue))
+            
+            # Add KDE overlay
+            sentiment_data = merged_df['sentiment'].dropna()
+            if len(sentiment_data) > 1:
+                density = stats.gaussian_kde(sentiment_data)
+                xs = np.linspace(sentiment_data.min(), sentiment_data.max(), 200)
+                plt.plot(xs, density(xs) * len(sentiment_data) * (bins[1] - bins[0]), 
+                    color='black', linewidth=2, alpha=0.8, label='KDE')
+            
+            plt.title(f"Sentiment Distribution for {market_name}", fontsize=16, fontweight='bold')
+            plt.xlabel("Sentiment Score", fontsize=14)
+            plt.ylabel("Frequency", fontsize=14)
+            plt.grid(True, alpha=0.3)
+            
+            # Add color legend
+            legend_elements = [
+                Rectangle((0, 0), 1, 1, facecolor='red', alpha=0.7, label='Negative (-1)'),
+                Rectangle((0, 0), 1, 1, facecolor='yellow', alpha=0.7, label='Neutral (0)'),
+                Rectangle((0, 0), 1, 1, facecolor='green', alpha=0.7, label='Positive (1)')
+            ]
+            plt.legend(handles=legend_elements, loc='upper right')
+            
+            plt.tight_layout()
+            
+            # Save the plot if a path is provided
+            if save_path:
+                plt.savefig(save_path, dpi=300, bbox_inches='tight')
+            
+            # Show the plot
+            if show_plot:
+                plt.show()
+            else:
+                plt.close()
