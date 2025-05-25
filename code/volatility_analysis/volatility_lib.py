@@ -99,13 +99,11 @@ def calculate_sentiment(date: datetime, news_df: pd.DataFrame, tokenizer: Any, m
     if not titles:
         return None
     sentiments = [infer_sentiment(title, tokenizer, model) for title in titles]
-    if verbose and len(sentiments) > 1:
-        print(f"Date: {date}, Sentiments: {sentiments}, Titles: {titles}")
     return sum(sentiments) / len(sentiments)
 
 
 # Split data into training and testing sets
-def split_data(merged_df: pd.DataFrame, cut_date: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def split_data(merged_df: pd.DataFrame, cut_date: str, val_ratio: float = 0.2 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Split data into training and testing sets based on a cut date.
     
@@ -126,7 +124,12 @@ def split_data(merged_df: pd.DataFrame, cut_date: str) -> Tuple[pd.DataFrame, pd
     
     train = merged_df[merged_df['date'] < cut_date]
     test = merged_df[merged_df['date'] >= cut_date]
-    return train, test
+
+    val_size = int(len(train) * val_ratio)
+    train = train[:-val_size]
+    val = train[-val_size:]
+
+    return train, test, val
 
 
 # Prepare data for LSTM model
@@ -679,16 +682,15 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     # Split data for LSTM model
     if verbose:
         print(f"Splitting data at {cut_date}...")
-    train, test = split_data(merged, cut_date)
+    train, test, val = split_data(merged, cut_date)
     
     # Create validation split from training data
-    train_split, val_split = create_validation_split(train, val_ratio=0.2)
     
 # Prepare LSTM data with validation set
     if verbose:
         print("Preparing data for LSTM model...")
     (X_train_seq, y_train_seq, X_test_seq, y_test_seq, X_val_seq, y_val_seq, 
-     scaler_x, scaler_y, scaler_y_single) = prepare_lstm_data(train_split, test, val_split, feature_cols=feature_cols, seq_len=seq_len)
+     scaler_x, scaler_y, scaler_y_single) = prepare_lstm_data(train, test, val, feature_cols=feature_cols, seq_len=seq_len)
       # Prepare validation data using the training scalers to maintain consistency
     # Train LSTM model with early stopping
     if verbose:
@@ -712,8 +714,8 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     return {
         'model': model,
         'metrics': metrics,
-        'train_size': len(train_split),
-        'val_size': len(val_split),
+        'train_size': len(train),
+        'val_size': len(val),
         'test_size': len(test),
         'feature_cols': feature_cols,
         'y_pred': y_pred_inv,
@@ -796,12 +798,6 @@ def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokeni
     
     return np.mean(sentiments)
 
-def create_validation_split(train_data: pd.DataFrame, val_ratio: float = 0.2) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Create validation split from training data."""
-    val_size = int(len(train_data) * val_ratio)
-    train_split = train_data[:-val_size]
-    val_split = train_data[-val_size:]
-    return train_split, val_split
 
 def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tensor, 
                               X_val_seq: torch.Tensor, y_val_seq: torch.Tensor,
