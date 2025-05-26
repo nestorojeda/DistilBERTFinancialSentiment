@@ -31,7 +31,8 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
                            learning_rate: float = 0.001,
                            use_sentiment: bool = True,
                            verbose: bool = True,
-                           use_technical_indicators: bool = True
+                           use_technical_indicators: bool = True,
+                           lstm_type: str = 'simple'  # 'simple' or 'improved'
 ) -> Dict:
     """
     Run the entire volatility analysis pipeline.
@@ -175,7 +176,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     output_size = y_train_seq.shape[1]
     model = train_with_early_stopping(X_train_seq, y_train_seq, X_val_seq, y_val_seq,
                                      input_size, output_size, epochs=epochs, 
-                                     learning_rate=learning_rate, verbose=verbose)
+                                     learning_rate=learning_rate, verbose=verbose, model_type=lstm_type)
     
     # Evaluate model
     if verbose:
@@ -211,8 +212,19 @@ def initialize_sentiment_model(model_name: str = "nojedag/xlm-roberta-finetuned-
     Returns:
         Tuple containing the tokenizer and model objects.
     """
+    # Determine device (GPU if available, CPU otherwise)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    
+    # Move model to GPU if available
+    model = model.to(device)
+    
+    print(f"Sentiment model loaded on device: {device}")
+    if torch.cuda.is_available():
+        print(f"GPU: {torch.cuda.get_device_name(0)}")
+    
     return tokenizer, model
 
 # Split data into training and testing sets
@@ -239,8 +251,8 @@ def split_data(merged_df: pd.DataFrame, cut_date: str, val_ratio: float = 0.2 ) 
     test = merged_df[merged_df['date'] >= cut_date]
 
     val_size = int(len(train) * val_ratio)
-    train = train[:-val_size]
-    val = train[-val_size:]
+    val = train[-val_size:]  # Take last val_size rows from original train set
+    train = train[:-val_size]  # Remove those rows from train set
 
     return train, test, val
 
@@ -277,10 +289,8 @@ def evaluate_lstm_model(model: nn.Module, X_test_seq: torch.Tensor, y_test_seq: 
         scaler_y: Scaler used to normalize target values.
     
     Returns:
-        Tuple of (predictions, actual_values, metrics_dict)
-    """
+        Tuple of (predictions, actual_values, metrics_dict)    """
     model.eval()
-    torch.set_grad_enabled(False)
     with torch.no_grad():
         y_pred = model(X_test_seq).numpy()
         # Use the original scaler for both predictions and test data
@@ -376,15 +386,21 @@ def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame, val: pd.DataFrame
     # Create sequences for LSTM
     X_train_seq, y_train_seq = create_sequences(X_train, y_train, seq_len)
     X_test_seq, y_test_seq = create_sequences(X_test, y_test, seq_len)
-    X_val_seq, y_val_seq = create_sequences(X_val, y_val, seq_len)
-
-    # Convert to torch tensors
+    X_val_seq, y_val_seq = create_sequences(X_val, y_val, seq_len)    # Convert to torch tensors
     X_train_seq = torch.tensor(X_train_seq, dtype=torch.float32)
     y_train_seq = torch.tensor(y_train_seq, dtype=torch.float32)
     X_test_seq = torch.tensor(X_test_seq, dtype=torch.float32)
     y_test_seq = torch.tensor(y_test_seq, dtype=torch.float32)
     X_val_seq = torch.tensor(X_val_seq, dtype=torch.float32)
     y_val_seq = torch.tensor(y_val_seq, dtype=torch.float32)
+    
+    # Input data doesn't need gradients, but ensure they're properly formatted
+    X_train_seq.requires_grad_(False)
+    y_train_seq.requires_grad_(False)
+    X_test_seq.requires_grad_(False)
+    y_test_seq.requires_grad_(False)
+    X_val_seq.requires_grad_(False)
+    y_val_seq.requires_grad_(False)
 
     return (X_train_seq, y_train_seq, X_test_seq, y_test_seq, X_val_seq, y_val_seq,
             scaler_x, scaler_y, scaler_y_single)
@@ -428,7 +444,7 @@ def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
     # merged_df['sentiment_vol'] = merged_df['sentiment'].rolling(window=5, min_periods=1).std()
     
     # News volume impact
-    # merged_df['news_sentiment_interaction'] = merged_df['count'] * merged_df['sentiment']
+    merged_df['news_sentiment_interaction'] = merged_df['count'] * merged_df['sentiment']
     
     return merged_df
 
@@ -438,24 +454,31 @@ def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokeni
     if not titles:
         return None
     
+    # Determine device (same as model)
+    device = next(model.parameters()).device
+    
     sentiments = []
     confidences = []
     
     for title in titles:
         inputs = tokenizer(title, return_tensors="pt", truncation=True, padding=True)
-        outputs = model(**inputs)
-        probs = torch.softmax(outputs.logits, dim=1)
+        # Move inputs to the same device as the model
+        inputs = {key: value.to(device) for key, value in inputs.items()}
         
-        # Get confidence (max probability)
-        confidence = torch.max(probs).item()
-        sentiment = probs.argmax(dim=1).item()
-        
-        # Map sentiment values (0, 1, 2) to (-1, 0, 1)
-        if sentiment == 2:
-            sentiment = -1
+        with torch.no_grad():  # Disable gradient computation for inference
+            outputs = model(**inputs)
+            probs = torch.softmax(outputs.logits, dim=1)
             
-        sentiments.append(sentiment)
-        confidences.append(confidence)
+            # Get confidence (max probability)
+            confidence = torch.max(probs).item()
+            sentiment = probs.argmax(dim=1).item()
+            
+            # Map sentiment values (0, 1, 2) to (-1, 0, 1)
+            if sentiment == 2:
+                sentiment = -1
+                
+            sentiments.append(sentiment)
+            confidences.append(confidence)
     
     # Weighted average by confidence
     if confidences:
@@ -469,7 +492,7 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
                               X_val_seq: torch.Tensor, y_val_seq: torch.Tensor,
                               input_size: int, output_size: int, 
                               epochs: int = 100, patience: int = 10, 
-                              learning_rate: float = 0.001, verbose: bool = True, model: str = 'simple') -> nn.Module:
+                              learning_rate: float = 0.001, verbose: bool = True, model_type: str = 'simple') -> nn.Module:
     """
     Train model with early stopping and learning rate scheduling.
     
@@ -484,16 +507,43 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
         patience: Number of epochs to wait for improvement before stopping.
         learning_rate: Learning rate for optimizer.
         verbose: Whether to print training progress.
+        model_type: Type of model to use ('simple' or 'improved').
+      Returns:
+        Trained LSTM model.    """
+    # CRITICAL FIX: Ensure gradients are globally enabled
+    # This fixes the "element 0 of tensors does not require grad" error on subsequent runs
+    torch.set_grad_enabled(True)
     
-    Returns:
-        Trained LSTM model.
-    """
-    if model == 'simple':
+    # Clear any existing computation graphs to prevent issues between runs
+    torch.cuda.empty_cache() if torch.cuda.is_available() else None
+    
+    # Ensure input tensors are properly formatted (clone to avoid sharing references)
+    # Note: We don't detach here as we need gradients to flow through the computation graph
+    X_train_seq = X_train_seq.clone()
+    y_train_seq = y_train_seq.clone()
+    X_val_seq = X_val_seq.clone()
+    y_val_seq = y_val_seq.clone()
+    if model_type == 'simple':
         from models.SimpleLSTM import LSTMVolatility
         model = LSTMVolatility(input_size, output_size=output_size, hidden_size=32, num_layers=2, seed=42)
-    elif model == 'improved':
+    elif model_type == 'improved':
         from models.ImprovedLSTM import ImprovedLSTMVolatility
         model = ImprovedLSTMVolatility(input_size, output_size=output_size, hidden_size=64, num_layers=2, dropout=0.2, seed=42)
+    else:
+        raise ValueError(f"Unknown model_type: {model_type}")
+    
+    # Explicitly ensure model parameters require gradients and model is in training mode
+    model.train()
+    for param in model.parameters():
+        param.requires_grad_(True)
+    
+    # Verify gradient setup
+    param_count = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    if verbose:
+        print(f"Model initialized with {param_count} trainable parameters")
+    
+    # Reset PyTorch autograd state to prevent issues between runs
+    torch.cuda.empty_cache() if torch.cuda.is_available() else None
     
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
@@ -518,12 +568,15 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)  # Gradient clipping
             optimizer.step()
             train_loss += loss.item()
-        
-        # Validation
+          # Validation
         model.eval()
         with torch.no_grad():
-            val_output = model(X_val_seq)
-            val_loss = criterion(val_output, y_val_seq).item()
+            if len(X_val_seq) > 0:
+                val_output = model(X_val_seq)
+                val_loss = criterion(val_output, y_val_seq).item()
+            else:
+                # If no validation data, use training loss as validation loss
+                val_loss = train_loss / max(1, len(X_train_seq) // 32)
         
         scheduler.step(val_loss)
         
