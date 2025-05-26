@@ -19,6 +19,7 @@ import os
 from datetime import datetime
 from typing import List, Dict, Tuple, Optional, Any
 from volatility_plotter import VolatilityPlotter
+from sklearn.model_selection import TimeSeriesSplit
 
 # Run the entire volatility analysis pipeline
 def run_volatility_pipeline(news_df: pd.DataFrame, 
@@ -68,30 +69,34 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     
     # Merge data
     merged = pd.merge(news_daily, stock_data, left_on='date', right_on='Date', how='inner')
-    merged['Volatility_Smooth'] = merged['Volatility'].rolling(window=5, min_periods=1, center=True).mean()
+    merged['Volatility_Smooth'] = merged['Volatility'].rolling(window=5, min_periods=1).mean()
     merged.rename(columns={'title': 'count',}, inplace=True)
     
     # Clean up the merged dataframe
     if 'Date' in merged.columns:
-        merged.drop(columns=['Date'], inplace=True)
-    
-    # Add technical indicators to stock data first
+        merged.drop(columns=['Date'], inplace=True)    # Add technical indicators to stock data first
     if use_technical_indicators:
         stock_data = add_technical_indicators(stock_data)
 
     # Re-merge with enhanced stock data to get technical indicators
     merged = pd.merge(news_daily, stock_data, left_on='date', right_on='Date', how='inner')
-    merged['Volatility_Smooth'] = merged['Volatility'].rolling(window=5, min_periods=1, center=True).mean()
+    merged['Volatility_Smooth'] = merged['Volatility'].rolling(window=5, min_periods=1).mean()
     merged.rename(columns={'title': 'count'}, inplace=True)
     if 'Date' in merged.columns:
         merged.drop(columns=['Date'], inplace=True)
     
-    # Conditionally initialize sentiment model and calculate sentiment    # Start with a base set of features that we know will be available
+    # Split data FIRST to prevent data leakage
+    if verbose:
+        print(f"Splitting data at {cut_date}...")
+    train_raw, test_raw, val_raw = split_data_temporal(merged, cut_date)
+    
+    # Now process features separately for train and test to prevent leakage
+    # Start with a base set of features that we know will be available
     base_features = ['Volatility_Smooth']
     tech_features = []
     sentiment_features = []
     
-    # Add technical indicators that are available
+    # Technical indicators are already computed (no additional processing needed)
     if 'RSI' in merged.columns:
         tech_features.extend(['RSI', 'MA_Ratio'])
     if 'Volume_Ratio' in merged.columns:
@@ -101,25 +106,27 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         # Initialize sentiment model
         tokenizer, model = initialize_sentiment_model()
         
-        # Calculate enhanced sentiment for each date
+        # Calculate enhanced sentiment for each date - this is OK as sentiment is based on historical news
         if verbose:
             print("Calculating enhanced sentiment scores...")
-        merged['sentiment'] = merged['date'].apply(
-            lambda date: enhanced_sentiment_calculation(date, news_df, tokenizer, model, verbose=False))
         
-        # Plot sentiment distribution
-        if verbose:
-            print("Plotting sentiment distribution...")
-            plot_sentiment_distribution(merged, market_name, output_dir, show_plot=verbose)
-         
-        # Add sentiment features
-        merged = improve_sentiment_features(merged)
-
+        # Apply sentiment calculation to each split separately
+        train_processed = train_raw.copy()
+        test_processed = test_raw.copy()  
+        val_processed = val_raw.copy()
         
-        # Add sentiment features 
-        # Feature selection: keep only features with high correlation to target
-        # Compute correlation with Volatility_Smooth and keep top N features
-        corr = merged.corr(numeric_only=True)
+        for df_name, df in [('train', train_processed), ('test', test_processed), ('val', val_processed)]:
+            df['sentiment'] = df['date'].apply(
+                lambda date: enhanced_sentiment_calculation(date, news_df, tokenizer, model, verbose=False))
+        
+        # Create sentiment features on training data only
+        train_processed = improve_sentiment_features(train_processed)
+        
+        # Apply the same feature engineering to test data using training statistics
+        test_processed = apply_sentiment_features_test(test_processed, train_processed)
+        val_processed = apply_sentiment_features_test(val_processed, train_processed)
+        
+        # Feature selection based ONLY on training data
         sentiment_cols = [
             'sentiment_vol',
             'news_sentiment_interaction',
@@ -135,16 +142,41 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
             'sentiment_per_news',
             'sentiment_zscore',
         ]
-        # Calculate absolute correlation with target
-        corrs = corr['Volatility_Smooth'].loc[sentiment_cols].abs().sort_values(ascending=False)
-        # Select top 5 most correlated features
+        
+        # Calculate correlation ONLY on training data
+        train_corr = train_processed.corr(numeric_only=True)
+        corrs = train_corr['Volatility_Smooth'].loc[sentiment_cols].abs().sort_values(ascending=False)
+        if verbose:
+            print("Top sentiment features based on correlation with Volatility_Smooth (training data only):")
+            print(corrs.head(5))
+
+        # Select top 5 most correlated features based on training data
         top_sentiment_features = list(corrs.head(5).index)
         sentiment_features = top_sentiment_features
         
+        # Reconstruct merged dataframe for plotting (using training data statistics)
+        merged_for_plotting = pd.concat([train_processed, test_processed, val_processed], ignore_index=True).sort_values('date')
+        
+        # Plot sentiment distribution
+        if verbose:
+            print("Plotting sentiment distribution...")
+            plot_sentiment_distribution(merged_for_plotting, market_name, output_dir, show_plot=verbose)
+        
+        # Plot the correlation between each sentiment feature and the target
+        if verbose:
+            print("Plotting sentiment features correlation with Volatility_Smooth...")
+            for feature in sentiment_features:
+                plotter = VolatilityPlotter()
+                plotter.plot_feature_correlation(train_processed, feature, 'Volatility_Smooth', market_name, output_dir, show_plot=verbose)
+        
     else:
-        # Skip sentiment calculation and use technical indicators
+        # Skip sentiment calculation
         if verbose:
             print("Skipping sentiment calculation (use_sentiment=False)...")
+        train_processed = train_raw.copy()
+        test_processed = test_raw.copy()
+        val_processed = val_raw.copy()
+        merged_for_plotting = pd.concat([train_processed, test_processed, val_processed], ignore_index=True).sort_values('date')
     
     # Combine all selected features
     feature_cols = base_features + tech_features
@@ -152,15 +184,15 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     if use_sentiment:
         feature_cols += sentiment_features
         
-    # Ensure all columns exist in the dataframe
-    missing_cols = [col for col in feature_cols if col not in merged.columns]
-    if missing_cols:
-        if verbose:
-            print(f"Warning: Missing columns in merged data: {missing_cols}")
-            print(f"Available columns: {merged.columns}")
-        # Add missing columns with zeros
-        for col in missing_cols:
-            merged[col] = 0
+    # Ensure all columns exist in the dataframes
+    for df_name, df in [('train', train_processed), ('test', test_processed), ('val', val_processed)]:
+        missing_cols = [col for col in feature_cols if col not in df.columns]
+        if missing_cols:
+            if verbose:
+                print(f"Warning: Missing columns in {df_name} data: {missing_cols}")
+            # Add missing columns with zeros
+            for col in missing_cols:
+                df[col] = 0
             
     if verbose:
         print(f"Final feature columns for model: {feature_cols}")
@@ -168,15 +200,13 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     if use_sentiment:
         # Plot volatility and news count
         news_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_news_count_plot.png")
-        plot_volatility_news_count(merged, market_name, news_plot_path, show_plot=verbose)
+        plot_volatility_news_count(merged_for_plotting, market_name, news_plot_path, show_plot=verbose)
     
         sentiment_plot_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_sentiment_plot.png")
-        plot_volatility_sentiment(merged, market_name, sentiment_plot_path, show_plot=verbose)
+        plot_volatility_sentiment(merged_for_plotting, market_name, sentiment_plot_path, show_plot=verbose)
     
-    # Split data for LSTM model
-    if verbose:
-        print(f"Splitting data at {cut_date}...")
-    train, test, val = split_data(merged, cut_date)
+    # Use the processed data splits
+    train, test, val = train_processed, test_processed, val_processed
 
     # Save merged data to CSV
     merged_csv_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_merged_data.csv")
@@ -246,18 +276,41 @@ def initialize_sentiment_model(model_name: str = "nojedag/xlm-roberta-finetuned-
     
     return tokenizer, model
 
-# Split data into training and testing sets
-def split_data(merged_df: pd.DataFrame, cut_date: str, val_ratio: float = 0.2 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+# Split data into training and testing sets - FIXED VERSION with no data leakage
+def split_data_temporal(merged_df: pd.DataFrame, cut_date: str, val_ratio: float = 0.2) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
-    Split data into training and testing sets based on a cut date.
+    Split data into training and testing sets based on a cut date WITHOUT data leakage.
     
     Args:
         merged_df: DataFrame containing merged news and volatility data.
         cut_date: Date string to split the data on (format: 'YYYY-MM-DD').
+        val_ratio: Ratio of training data to use for validation.
     
     Returns:
-        Tuple of (training_data, testing_data)
-    """    # Fill NaN values in sentiment features with 0 (neutral sentiment)
+        Tuple of (training_data, testing_data, validation_data)
+    """
+    # Sort by date to ensure temporal order
+    merged_df_sorted = merged_df.sort_values('date').copy()
+    
+    # Split without any preprocessing to avoid data leakage
+    train = merged_df_sorted[merged_df_sorted['date'] < cut_date].copy()
+    test = merged_df_sorted[merged_df_sorted['date'] >= cut_date].copy()
+
+    val_size = int(len(train) * val_ratio)
+    val = train[-val_size:].copy()  # Take last val_size rows from original train set
+    train = train[:-val_size].copy()  # Remove those rows from train set
+
+    return train, test, val
+
+# Legacy function for backwards compatibility
+def split_data(merged_df: pd.DataFrame, cut_date: str, val_ratio: float = 0.2 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """
+    LEGACY: Split data into training and testing sets based on a cut date.
+    
+    WARNING: This function has data leakage issues. Use split_data_temporal instead.
+    """
+    
+    # Fill NaN values in sentiment features with 0 (neutral sentiment)
     # and technical indicators with their median values
     for col in merged_df.columns:
         if col.startswith('sentiment'):
@@ -351,51 +404,76 @@ def get_titles(date: datetime, news_df: pd.DataFrame) -> List[str]:
     """
     return news_df[news_df['date'].dt.date == date.date()]['title'].tolist()
 
-# Prepare data for LSTM model
+# Prepare data for LSTM model - FIXED VERSION without data leakage
 def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame, val: pd.DataFrame,
                      feature_cols: List[str] = ['Volatility_Smooth', 'sentiment'], 
                      target_col: str = 'Volatility_Smooth', 
                      seq_len: int = 10) -> Tuple:
     """
-    Prepare data for LSTM model training and testing.
+    Prepare data for LSTM model training and testing WITHOUT data leakage.
     
     Args:
         train: Training data DataFrame.
         test: Testing data DataFrame.
+        val: Validation data DataFrame.
         feature_cols: List of feature column names.
         target_col: Name of target column.
         seq_len: Sequence length for LSTM.
     
     Returns:
         Tuple containing prepared data and scalers.
-    """    # Verify all required columns exist in both dataframes
+    """    
+    # Verify all required columns exist in all dataframes
     missing_train = [col for col in feature_cols if col not in train.columns]
     missing_test = [col for col in feature_cols if col not in test.columns]
+    missing_val = [col for col in feature_cols if col not in val.columns]
     
-    if missing_train or missing_test:
-        print(f"Warning: Missing columns in train: {missing_train}, test: {missing_test}")
+    if missing_train or missing_test or missing_val:
+        print(f"Warning: Missing columns - train: {missing_train}, test: {missing_test}, val: {missing_val}")
         # Add missing columns with zeros
         for col in missing_train:
             train[col] = 0
         for col in missing_test:
             test[col] = 0
+        for col in missing_val:
+            val[col] = 0
+    
+    # Handle NaN values WITHOUT data leakage
+    train_clean = train.copy()
+    test_clean = test.copy()
+    val_clean = val.copy()
+    
+    # Fill NaN values in sentiment features with 0 (neutral sentiment)
+    # and technical indicators with their TRAINING SET median values
+    for col in feature_cols + [target_col]:
+        if col.startswith('sentiment'):
+            # Sentiment features: fill with 0 (neutral)
+            train_clean[col] = train_clean[col].fillna(0)
+            test_clean[col] = test_clean[col].fillna(0)
+            val_clean[col] = val_clean[col].fillna(0)
+        elif col != 'date' and train_clean[col].dtype in [np.float64, np.float32, np.int64, np.int32]:
+            # For numeric columns: use TRAINING data median to fill ALL datasets
+            train_median = train_clean[col].median()
+            train_clean[col] = train_clean[col].fillna(train_median)
+            test_clean[col] = test_clean[col].fillna(train_median)
+            val_clean[col] = val_clean[col].fillna(train_median)
     
     # Select features and target
-    train_data = train[feature_cols + [target_col]].copy()
-    test_data = test[feature_cols + [target_col]].copy()
-    val_data = val[feature_cols + [target_col]].copy() if not val.empty else pd.DataFrame(columns=feature_cols + [target_col])
+    train_data = train_clean[feature_cols + [target_col]].copy()
+    test_data = test_clean[feature_cols + [target_col]].copy()
+    val_data = val_clean[feature_cols + [target_col]].copy() if not val_clean.empty else pd.DataFrame(columns=feature_cols + [target_col])
     
-    # Normalize features and target
+    # Normalize features and target - fit scalers ONLY on training data
     scaler_x = MinMaxScaler()
     scaler_y = MinMaxScaler()
     scaler_y_single = MinMaxScaler()  # For single column output
 
+    # Fit scalers on training data only
     X_train = scaler_x.fit_transform(train_data[feature_cols])
-    y_train = scaler_y.fit_transform(train_data[[target_col]])\
-        
-    # Fit the single-column scaler on the target column values as a 1D array
+    y_train = scaler_y.fit_transform(train_data[[target_col]])
     scaler_y_single.fit(train_data[[target_col]].values.reshape(-1, 1))
 
+    # Transform test and validation data using training scalers
     X_test = scaler_x.transform(test_data[feature_cols])
     y_test = scaler_y.transform(test_data[[target_col]])
 
@@ -405,7 +483,9 @@ def prepare_lstm_data(train: pd.DataFrame, test: pd.DataFrame, val: pd.DataFrame
     # Create sequences for LSTM
     X_train_seq, y_train_seq = create_sequences(X_train, y_train, seq_len)
     X_test_seq, y_test_seq = create_sequences(X_test, y_test, seq_len)
-    X_val_seq, y_val_seq = create_sequences(X_val, y_val, seq_len)    # Convert to torch tensors
+    X_val_seq, y_val_seq = create_sequences(X_val, y_val, seq_len)
+    
+    # Convert to torch tensors
     X_train_seq = torch.tensor(X_train_seq, dtype=torch.float32)
     y_train_seq = torch.tensor(y_train_seq, dtype=torch.float32)
     X_test_seq = torch.tensor(X_test_seq, dtype=torch.float32)
@@ -452,6 +532,43 @@ def add_technical_indicators(stock_data: pd.DataFrame) -> pd.DataFrame:
     
     return stock_data
 
+def apply_technical_indicators_test(test_data: pd.DataFrame, train_data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Apply technical indicators to test data using the same calculations as training data.
+    This prevents data leakage by not using test data statistics.
+    """
+    test_data = test_data.copy()
+    
+    # RSI (Relative Strength Index) - calculate on test data itself as it's a technical indicator
+    def calculate_rsi(prices, window=14):
+        delta = prices.diff()
+        gain = (delta.where(delta > 0, 0)).rolling(window=window).mean()
+        loss = (-delta.where(delta < 0, 0)).rolling(window=window).mean()
+        rs = gain / loss
+        return 100 - (100 / (1 + rs))
+    
+    test_data['RSI'] = calculate_rsi(test_data['Close'])
+    
+    # Moving averages - calculate on test data itself
+    test_data['MA_5'] = test_data['Close'].rolling(window=5).mean()
+    test_data['MA_20'] = test_data['Close'].rolling(window=20).mean()
+    test_data['MA_Ratio'] = test_data['MA_5'] / test_data['MA_20']
+    
+    # Volume indicators (if available)
+    if 'Volume' in test_data.columns:
+        test_data['Volume_MA'] = test_data['Volume'].rolling(window=20).mean()
+        test_data['Volume_Ratio'] = test_data['Volume'] / test_data['Volume_MA']
+    
+    # Fill any remaining NaN values with training data medians to prevent leakage
+    for col in test_data.columns:
+        if col != 'date' and test_data[col].dtype in [np.float64, np.float32, np.int64, np.int32]:
+            if col in train_data.columns:
+                # Use training data median for filling
+                fill_value = train_data[col].median()
+                test_data[col] = test_data[col].fillna(fill_value)
+    
+    return test_data
+
 def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
     """Add improved sentiment features with multiple rolling windows, lags, and normalization."""
     merged_df = merged_df.copy()
@@ -475,14 +592,55 @@ def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
     merged_df['sentiment_per_news'] = merged_df['sentiment'] / merged_df['count'].replace(0, np.nan)
     merged_df['sentiment_per_news'] = merged_df['sentiment_per_news'].fillna(0)
 
-    # Z-score normalization for sentiment (optional, can help model convergence)
-    merged_df['sentiment_zscore'] = (merged_df['sentiment'] - merged_df['sentiment'].mean()) / (merged_df['sentiment'].std() + 1e-8)
+    # Z-score normalization for sentiment (using training data statistics)
+    sentiment_mean = merged_df['sentiment'].mean()
+    sentiment_std = merged_df['sentiment'].std()
+    merged_df['sentiment_zscore'] = (merged_df['sentiment'] - sentiment_mean) / (sentiment_std + 1e-8)
 
     # Fill NaNs in all new features with 0
     sentiment_cols = [col for col in merged_df.columns if col.startswith('sentiment') or 'news_sentiment_interaction' in col]
     merged_df[sentiment_cols] = merged_df[sentiment_cols].fillna(0)
 
     return merged_df
+
+def apply_sentiment_features_test(test_df: pd.DataFrame, train_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Apply sentiment features to test data using training data statistics to prevent data leakage.
+    """
+    test_df = test_df.copy()
+    
+    # Rolling means and stds for multiple windows (calculate on test data itself)
+    for window in [3, 5, 7]:
+        test_df[f'sentiment_mean_{window}d'] = test_df['sentiment'].rolling(window=window, min_periods=1).mean()
+        test_df[f'sentiment_std_{window}d'] = test_df['sentiment'].rolling(window=window, min_periods=1).std()
+
+    # Lagged sentiment features (previous 1, 2, 3 days)
+    for lag in [1, 2, 3]:
+        test_df[f'sentiment_lag_{lag}'] = test_df['sentiment'].shift(lag)
+
+    # Sentiment volatility (5-day rolling std, legacy)
+    test_df['sentiment_vol'] = test_df['sentiment'].rolling(window=5, min_periods=1).std()
+
+    # News volume impact
+    test_df['news_sentiment_interaction'] = test_df['count'] * test_df['sentiment']
+
+    # Sentiment normalized by news count (avoid division by zero)
+    test_df['sentiment_per_news'] = test_df['sentiment'] / test_df['count'].replace(0, np.nan)
+    test_df['sentiment_per_news'] = test_df['sentiment_per_news'].fillna(0)
+
+    # Z-score normalization for sentiment using TRAINING data statistics (prevents leakage)
+    if 'sentiment' in train_df.columns:
+        sentiment_mean = train_df['sentiment'].mean()
+        sentiment_std = train_df['sentiment'].std()
+        test_df['sentiment_zscore'] = (test_df['sentiment'] - sentiment_mean) / (sentiment_std + 1e-8)
+    else:
+        test_df['sentiment_zscore'] = 0
+
+    # Fill NaNs in all new features with 0
+    sentiment_cols = [col for col in test_df.columns if col.startswith('sentiment') or 'news_sentiment_interaction' in col]
+    test_df[sentiment_cols] = test_df[sentiment_cols].fillna(0)
+
+    return test_df
 
 def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokenizer: Any, model: Any, verbose: bool = False) -> Optional[float]:
     """Enhanced sentiment with confidence weighting."""
@@ -554,11 +712,11 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
     
     # Ensure input tensors are properly formatted (clone to avoid sharing references)
-    # Note: We don't detach here as we need gradients to flow through the computation graph
-    X_train_seq = X_train_seq.clone()
+    # Note: We don't detach here as we need gradients to flow through the computation graph    X_train_seq = X_train_seq.clone()
     y_train_seq = y_train_seq.clone()
     X_val_seq = X_val_seq.clone()
     y_val_seq = y_val_seq.clone()
+    
     if model_type == 'simple':
         from models.SimpleLSTM import LSTMVolatility
         model = LSTMVolatility(input_size, output_size=output_size, hidden_size=32, num_layers=2, seed=42)

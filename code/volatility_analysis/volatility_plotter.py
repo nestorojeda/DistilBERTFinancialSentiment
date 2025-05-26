@@ -381,3 +381,43 @@ class VolatilityPlotter:
             plt.show()
         else:
             plt.close()
+
+    def plot_feature_correlation(self, df: pd.DataFrame, feature: str, target: str = 'Volatility_Smooth', market_name: str = 'Market', 
+                                 save_path: Optional[str] = None, 
+                                 show_plot: bool = True) -> None:
+        
+        """
+        Plot feature correlation with the target variable.
+
+        Args:
+            df: DataFrame containing the features and target variable.
+            feature: Name of the feature to plot against the target.
+            target: Name of the target variable (default is 'Volatility_Smooth').
+            market_name: Name of the market for plot title.
+            save_path: Path to save the plot image, or None to skip saving.
+            show_plot: Whether to display the plot.
+        """
+        # Set the style with improved aesthetics
+        self._setup_style()
+        # Create a figure
+        plt.figure(figsize=(12, 6))
+        # Scatter plot of the feature against the target variable
+        sns.scatterplot(data=df, x=feature, y=target, color='#2176ae', alpha=0.7, edgecolor='white', linewidth=1.5) 
+        # Fit a linear regression line
+        sns.regplot(data=df, x=feature, y=target, scatter=False, color='#d7263d', line_kws={'linewidth': 2})
+        # Set labels and title
+        plt.xlabel(feature, fontsize=14, fontweight='bold')
+        plt.ylabel(target, fontsize=14, fontweight='bold')
+        plt.title(f"{market_name} {feature} vs {target}", fontsize=16, fontweight='bold')
+        # Add grid for better readability
+        plt.grid(True, linestyle='--', alpha=0.3)
+        # Add tight layout to prevent label cutoff
+        plt.tight_layout()
+        # Save the plot if a path is provided
+        if save_path:
+            plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        # Show the plot
+        if show_plot:
+            plt.show()
+        else:
+            plt.close()
