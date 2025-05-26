@@ -280,6 +280,7 @@ def evaluate_lstm_model(model: nn.Module, X_test_seq: torch.Tensor, y_test_seq: 
         Tuple of (predictions, actual_values, metrics_dict)
     """
     model.eval()
+    torch.set_grad_enabled(False)
     with torch.no_grad():
         y_pred = model(X_test_seq).numpy()
         # Use the original scaler for both predictions and test data
@@ -489,10 +490,11 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
     """
     if model == 'simple':
         from models.SimpleLSTM import LSTMVolatility
-        model = LSTMVolatility(input_size, output_size=output_size)
+        model = LSTMVolatility(input_size, output_size=output_size, hidden_size=32, num_layers=2, seed=42)
     elif model == 'improved':
         from models.ImprovedLSTM import ImprovedLSTMVolatility
-        model = ImprovedLSTMVolatility(input_size, output_size=output_size)
+        model = ImprovedLSTMVolatility(input_size, output_size=output_size, hidden_size=64, num_layers=2, dropout=0.2, seed=42)
+    
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=5, factor=0.5)
