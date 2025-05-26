@@ -114,14 +114,33 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
          
         # Add sentiment features
         merged = improve_sentiment_features(merged)
-        
-        # Shift sentiment features to use previous day's data
-        merged['sentiment'] = merged['sentiment'].shift(1)
-        merged['sentiment_3d'] = merged['sentiment_3d'].shift(1)
+
         
         # Add sentiment features 
-        # sentiment_features = ['sentiment', 'sentiment_3d', 'sentiment_vol', 'news_sentiment_interaction']
-        sentiment_features = ['sentiment', 'sentiment_3d']
+        # Feature selection: keep only features with high correlation to target
+        # Compute correlation with Volatility_Smooth and keep top N features
+        corr = merged.corr(numeric_only=True)
+        sentiment_cols = [
+            'sentiment_vol',
+            'news_sentiment_interaction',
+            'sentiment_mean_3d',
+            'sentiment_std_3d',
+            'sentiment_mean_5d',
+            'sentiment_std_5d',
+            'sentiment_mean_7d',
+            'sentiment_std_7d',
+            'sentiment_lag_1',
+            'sentiment_lag_2',
+            'sentiment_lag_3',
+            'sentiment_per_news',
+            'sentiment_zscore',
+        ]
+        # Calculate absolute correlation with target
+        corrs = corr['Volatility_Smooth'].loc[sentiment_cols].abs().sort_values(ascending=False)
+        # Select top 5 most correlated features
+        top_sentiment_features = list(corrs.head(5).index)
+        sentiment_features = top_sentiment_features
+        
     else:
         # Skip sentiment calculation and use technical indicators
         if verbose:
@@ -434,18 +453,35 @@ def add_technical_indicators(stock_data: pd.DataFrame) -> pd.DataFrame:
     return stock_data
 
 def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
-    """Add improved sentiment features."""
+    """Add improved sentiment features with multiple rolling windows, lags, and normalization."""
     merged_df = merged_df.copy()
-    
-    # Sentiment momentum (3-day rolling average)
-    merged_df['sentiment_3d'] = merged_df['sentiment'].rolling(window=3, min_periods=1).mean()
-    
-    # Sentiment volatility (rolling std)
-    # merged_df['sentiment_vol'] = merged_df['sentiment'].rolling(window=5, min_periods=1).std()
-    
+
+    # Rolling means and stds for multiple windows
+    for window in [3, 5, 7]:
+        merged_df[f'sentiment_mean_{window}d'] = merged_df['sentiment'].rolling(window=window, min_periods=1).mean()
+        merged_df[f'sentiment_std_{window}d'] = merged_df['sentiment'].rolling(window=window, min_periods=1).std()
+
+    # Lagged sentiment features (previous 1, 2, 3 days)
+    for lag in [1, 2, 3]:
+        merged_df[f'sentiment_lag_{lag}'] = merged_df['sentiment'].shift(lag)
+
+    # Sentiment volatility (5-day rolling std, legacy)
+    merged_df['sentiment_vol'] = merged_df['sentiment'].rolling(window=5, min_periods=1).std()
+
     # News volume impact
     merged_df['news_sentiment_interaction'] = merged_df['count'] * merged_df['sentiment']
-    
+
+    # Sentiment normalized by news count (avoid division by zero)
+    merged_df['sentiment_per_news'] = merged_df['sentiment'] / merged_df['count'].replace(0, np.nan)
+    merged_df['sentiment_per_news'] = merged_df['sentiment_per_news'].fillna(0)
+
+    # Z-score normalization for sentiment (optional, can help model convergence)
+    merged_df['sentiment_zscore'] = (merged_df['sentiment'] - merged_df['sentiment'].mean()) / (merged_df['sentiment'].std() + 1e-8)
+
+    # Fill NaNs in all new features with 0
+    sentiment_cols = [col for col in merged_df.columns if col.startswith('sentiment') or 'news_sentiment_interaction' in col]
+    merged_df[sentiment_cols] = merged_df[sentiment_cols].fillna(0)
+
     return merged_df
 
 def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokenizer: Any, model: Any, verbose: bool = False) -> Optional[float]:
