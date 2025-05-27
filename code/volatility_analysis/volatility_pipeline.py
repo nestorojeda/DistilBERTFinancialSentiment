@@ -20,6 +20,9 @@ from datetime import datetime
 from typing import List, Dict, Tuple, Optional, Any
 from volatility_plotter import VolatilityPlotter
 from sklearn.model_selection import TimeSeriesSplit
+from sklearn.decomposition import PCA
+from sklearn.feature_selection import SelectKBest, f_regression
+from sklearn.model_selection import cross_val_score
 
 # Run the entire volatility analysis pipeline
 def run_volatility_pipeline(news_df: pd.DataFrame, 
@@ -88,7 +91,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     # Split data FIRST to prevent data leakage
     if verbose:
         print(f"Splitting data at {cut_date}...")
-    train_raw, test_raw, val_raw = split_data_temporal(merged, cut_date)
+    train_raw, test_raw, val_raw = split_data_temporal(merged, cut_date, val_ratio=0.3)
     
     # Now process features separately for train and test to prevent leakage
     # Start with a base set of features that we know will be available
@@ -101,7 +104,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         tech_features.extend(['RSI', 'MA_Ratio'])
     if 'Volume_Ratio' in merged.columns:
         tech_features.append('Volume_Ratio')
-        
+
     if use_sentiment:
         # Initialize sentiment model
         tokenizer, model = initialize_sentiment_model()
@@ -142,17 +145,15 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
             'sentiment_per_news',
             'sentiment_zscore',
         ]
-        
-        # Calculate correlation ONLY on training data
-        train_corr = train_processed.corr(numeric_only=True)
-        corrs = train_corr['Volatility_Smooth'].loc[sentiment_cols].abs().sort_values(ascending=False)
-        if verbose:
-            print("Top sentiment features based on correlation with Volatility_Smooth (training data only):")
-            print(corrs.head(5))
 
-        # Select top 5 most correlated features based on training data
-        top_sentiment_features = list(corrs.head(5).index)
-        sentiment_features = top_sentiment_features
+        selector = SelectKBest(score_func=f_regression, k=5)
+        X_train_sentiment = train_processed[sentiment_cols].fillna(0)
+        y_train_target = train_processed['Volatility_Smooth']
+
+        # Fit selector on training data
+        selector.fit(X_train_sentiment, y_train_target)
+        selected_features = [sentiment_cols[i] for i in selector.get_support(indices=True)]
+        sentiment_features = selected_features
         
         # Reconstruct merged dataframe for plotting (using training data statistics)
         merged_for_plotting = pd.concat([train_processed, test_processed, val_processed], ignore_index=True).sort_values('date')
@@ -161,13 +162,6 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         if verbose:
             print("Plotting sentiment distribution...")
             plot_sentiment_distribution(merged_for_plotting, market_name, output_dir, show_plot=verbose)
-        
-        # Plot the correlation between each sentiment feature and the target
-        if verbose:
-            print("Plotting sentiment features correlation with Volatility_Smooth...")
-            for feature in sentiment_features:
-                plotter = VolatilityPlotter()
-                plotter.plot_feature_correlation(train_processed, feature, 'Volatility_Smooth', market_name, output_dir, show_plot=verbose)
         
     else:
         # Skip sentiment calculation
@@ -207,10 +201,6 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     
     # Use the processed data splits
     train, test, val = train_processed, test_processed, val_processed
-
-    # Save merged data to CSV
-    merged_csv_path = os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_merged_data.csv")
-    merged.to_csv(merged_csv_path, index=False)    
     
     # Prepare LSTM data with validation set
     if verbose:
@@ -572,7 +562,6 @@ def apply_technical_indicators_test(test_data: pd.DataFrame, train_data: pd.Data
 def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
     """Add improved sentiment features with multiple rolling windows, lags, and normalization."""
     merged_df = merged_df.copy()
-
     # Rolling means and stds for multiple windows
     for window in [3, 5, 7]:
         merged_df[f'sentiment_mean_{window}d'] = merged_df['sentiment'].rolling(window=window, min_periods=1).mean()
@@ -685,7 +674,7 @@ def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokeni
 def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tensor, 
                               X_val_seq: torch.Tensor, y_val_seq: torch.Tensor,
                               input_size: int, output_size: int, 
-                              epochs: int = 100, patience: int = 10, 
+                              epochs: int = 100, patience: int = 15, 
                               learning_rate: float = 0.001, verbose: bool = True, model_type: str = 'simple') -> nn.Module:
     """
     Train model with early stopping and learning rate scheduling.
@@ -719,7 +708,7 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
     
     if model_type == 'simple':
         from models.SimpleLSTM import LSTMVolatility
-        model = LSTMVolatility(input_size, output_size=output_size, hidden_size=32, num_layers=2, seed=42)
+        model = LSTMVolatility(input_size, output_size=output_size, hidden_size=32, num_layers=1, seed=42)
     elif model_type == 'improved':
         from models.ImprovedLSTM import ImprovedLSTMVolatility
         model = ImprovedLSTMVolatility(input_size, output_size=output_size, hidden_size=64, num_layers=2, dropout=0.2, seed=42)
@@ -740,7 +729,7 @@ def train_with_early_stopping(X_train_seq: torch.Tensor, y_train_seq: torch.Tens
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
     
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-4)  # Increased from 1e-5
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=5, factor=0.5)
     
     best_val_loss = float('inf')
@@ -862,3 +851,14 @@ def plot_prediction_results(test_dates: np.ndarray, y_test_inv: np.ndarray, y_pr
     """
     plotter = VolatilityPlotter()
     plotter.plot_prediction_results(test_dates, y_test_inv, y_pred_inv, market_name, save_path, show_plot)
+
+
+def reduce_feature_dimensionality(train_features, test_features, val_features, n_components=0.95):
+        """Reduce feature dimensionality using PCA to prevent overfitting."""
+        pca = PCA(n_components=n_components)  # Keep 95% of variance
+        
+        train_reduced = pca.fit_transform(train_features)
+        test_reduced = pca.transform(test_features)
+        val_reduced = pca.transform(val_features)
+        
+        return train_reduced, test_reduced, val_reduced, pca
