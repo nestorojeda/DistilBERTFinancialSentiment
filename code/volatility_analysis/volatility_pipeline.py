@@ -36,7 +36,8 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
                            use_sentiment: bool = True,
                            verbose: bool = True,
                            use_technical_indicators: bool = True,
-                           lstm_type: str = 'simple'  # 'simple' or 'improved'
+                           lstm_type: str = 'simple',  # 'simple' or 'improved'
+                           patience: int = 15
 ) -> Dict:
     """
     Run the entire volatility analysis pipeline.
@@ -215,7 +216,7 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
     output_size = y_train_seq.shape[1]
     model = train_with_early_stopping(X_train_seq, y_train_seq, X_val_seq, y_val_seq,
                                      input_size, output_size, epochs=epochs, 
-                                     learning_rate=learning_rate, verbose=verbose, model_type=lstm_type)
+                                     learning_rate=learning_rate, verbose=verbose, model_type=lstm_type, patience=patience)
     
     # Evaluate model
     if verbose:
