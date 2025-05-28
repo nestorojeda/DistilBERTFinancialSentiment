@@ -123,8 +123,14 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
             df['sentiment'] = df['date'].apply(
                 lambda date: enhanced_sentiment_calculation(date, news_df, tokenizer, model, verbose=False))
         
-        # Create sentiment features on training data only
-        train_processed = improve_sentiment_features(train_processed)
+        # Create sentiment features on training data only and capture stats
+        train_processed = improve_sentiment_features(train_processed, train_stats=None)
+        
+        # Get training statistics for consistent application to test/val
+        train_stats = {
+            'sentiment_mean': train_processed['sentiment'].mean(),
+            'sentiment_std': train_processed['sentiment'].std()
+        }
         
         # Apply the same feature engineering to test data using training statistics
         test_processed = apply_sentiment_features_test(test_processed, train_processed)
@@ -145,9 +151,12 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
             'sentiment_lag_3',
             'sentiment_per_news',
             'sentiment_zscore',
+            'sentiment_momentum',
+            'sentiment_vol_interaction',
+            'sentiment_extreme'
         ]
 
-        selector = SelectKBest(score_func=f_regression, k=5)
+        selector = SelectKBest(score_func=f_regression, k=min(5, len(sentiment_cols)))        
         X_train_sentiment = train_processed[sentiment_cols].fillna(0)
         y_train_target = train_processed['Volatility_Smooth']
 
@@ -560,9 +569,10 @@ def apply_technical_indicators_test(test_data: pd.DataFrame, train_data: pd.Data
     
     return test_data
 
-def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
+def improve_sentiment_features(merged_df: pd.DataFrame, train_stats: Dict = None) -> pd.DataFrame:
     """Add improved sentiment features with multiple rolling windows, lags, and normalization."""
     merged_df = merged_df.copy()
+    
     # Rolling means and stds for multiple windows
     for window in [3, 5, 7]:
         merged_df[f'sentiment_mean_{window}d'] = merged_df['sentiment'].rolling(window=window, min_periods=1).mean()
@@ -582,9 +592,24 @@ def improve_sentiment_features(merged_df: pd.DataFrame) -> pd.DataFrame:
     merged_df['sentiment_per_news'] = merged_df['sentiment'] / merged_df['count'].replace(0, np.nan)
     merged_df['sentiment_per_news'] = merged_df['sentiment_per_news'].fillna(0)
 
-    # Z-score normalization for sentiment (using training data statistics)
-    sentiment_mean = merged_df['sentiment'].mean()
-    sentiment_std = merged_df['sentiment'].std()
+    # Sentiment momentum (change from previous day)
+    merged_df['sentiment_momentum'] = merged_df['sentiment'].diff()
+    
+    # Sentiment-volatility interaction (current sentiment with previous volatility)
+    merged_df['sentiment_vol_interaction'] = merged_df['sentiment'] * merged_df['Volatility_Smooth'].shift(1)
+    
+    # Use provided stats or calculate from current data
+    if train_stats is None:
+        sentiment_mean = merged_df['sentiment'].mean()
+        sentiment_std = merged_df['sentiment'].std()
+    else:
+        sentiment_mean = train_stats['sentiment_mean']
+        sentiment_std = train_stats['sentiment_std']
+    
+    # Extreme sentiment indicator (beyond 1 std)
+    merged_df['sentiment_extreme'] = ((merged_df['sentiment'] - sentiment_mean).abs() > sentiment_std).astype(int)
+    
+    # Z-score normalization for sentiment
     merged_df['sentiment_zscore'] = (merged_df['sentiment'] - sentiment_mean) / (sentiment_std + 1e-8)
 
     # Fill NaNs in all new features with 0
@@ -618,12 +643,20 @@ def apply_sentiment_features_test(test_df: pd.DataFrame, train_df: pd.DataFrame)
     test_df['sentiment_per_news'] = test_df['sentiment'] / test_df['count'].replace(0, np.nan)
     test_df['sentiment_per_news'] = test_df['sentiment_per_news'].fillna(0)
 
-    # Z-score normalization for sentiment using TRAINING data statistics (prevents leakage)
+    # Sentiment momentum (change from previous day)
+    test_df['sentiment_momentum'] = test_df['sentiment'].diff()
+    
+    # Sentiment-volatility interaction
+    test_df['sentiment_vol_interaction'] = test_df['sentiment'] * test_df['Volatility_Smooth'].shift(1)
+    
+    # Use TRAINING data statistics for extreme sentiment and z-score
     if 'sentiment' in train_df.columns:
         sentiment_mean = train_df['sentiment'].mean()
         sentiment_std = train_df['sentiment'].std()
+        test_df['sentiment_extreme'] = ((test_df['sentiment'] - sentiment_mean).abs() > sentiment_std).astype(int)
         test_df['sentiment_zscore'] = (test_df['sentiment'] - sentiment_mean) / (sentiment_std + 1e-8)
     else:
+        test_df['sentiment_extreme'] = 0
         test_df['sentiment_zscore'] = 0
 
     # Fill NaNs in all new features with 0
