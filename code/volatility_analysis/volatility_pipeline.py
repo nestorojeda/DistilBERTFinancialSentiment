@@ -181,6 +181,8 @@ def run_volatility_pipeline(news_df: pd.DataFrame,
         test_processed = test_raw.copy()
         val_processed = val_raw.copy()
         merged_for_plotting = pd.concat([train_processed, test_processed, val_processed], ignore_index=True).sort_values('date')
+
+    merged_for_plotting.to_csv(os.path.join(output_dir, f"{market_name.lower().replace(' ', '_')}_final_data.csv"), index=False)
     
     # Combine all selected features
     feature_cols = base_features + tech_features
@@ -665,7 +667,43 @@ def apply_sentiment_features_test(test_df: pd.DataFrame, train_df: pd.DataFrame)
 
     return test_df
 
-def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokenizer: Any, model: Any, verbose: bool = False) -> Optional[float]:
+def sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokenizer: Any, model: Any) -> Optional[float]:
+    """
+    Calculate sentiment for a given date using a pre-trained model.
+    
+    Args:
+        date: The date to calculate sentiment for.
+        news_df: DataFrame containing news data with 'date' and 'title' columns.
+        tokenizer: Tokenizer for the sentiment model.
+        model: Pre-trained sentiment analysis model.
+    
+    Returns:
+        Sentiment score for the given date, or None if no titles are found.
+    """
+    titles = get_titles(date, news_df)
+    if not titles:
+        return None
+    
+    # Determine device (same as model)
+    device = next(model.parameters()).device
+    
+    inputs = tokenizer(titles, return_tensors="pt", truncation=True, padding=True)
+    inputs = {key: value.to(device) for key, value in inputs.items()}
+    
+    with torch.no_grad():  # Disable gradient computation for inference
+        outputs = model(**inputs)
+        probs = torch.softmax(outputs.logits, dim=1)
+        
+        # Average sentiment across all titles
+        sentiment = probs.mean(dim=0).argmax().item()
+        
+        # Map sentiment values (0, 1, 2) to (-1, 0, 1)
+        if sentiment == 2:
+            sentiment = -1
+            
+    return sentiment
+
+def enhanced_sentiment_calculation(date: datetime, news_df: pd.DataFrame, tokenizer: Any, model: Any) -> Optional[float]:
     """Enhanced sentiment with confidence weighting."""
     titles = get_titles(date, news_df)
     if not titles:
