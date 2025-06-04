@@ -10,7 +10,7 @@ from torch.optim import Adam
 from torch.cuda.amp import GradScaler
 
 # Local imports from the refactored modules
-from data_manager import transform_labels, tokenize_data
+from toolbox.utils import transform_labels, tokenize_data
 from evaluation import evaluate
 from model_trainer import fine_tune_language
 from distillation import DistillationTrainer
@@ -144,7 +144,7 @@ logger.log("Preparing data for distillation...", type="INFO")
 tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_NAME) # Use base tokenizer for student
 
 # Tokenize the entire dataset once
-tokenized_dataset = complete_dataset.map(lambda ex: tokenize_data(ex, tokenizer), batched=True,
+tokenized_dataset = complete_dataset.map(lambda ex: tokenize_data(tokenizer, ex), batched=True,
                                          remove_columns=['sentence', 'lang']) # Remove unused columns
 
 # Ensure 'labels' column exists after transformations
@@ -233,7 +233,7 @@ logger.log("Loading synthetic dataset...", type="INFO")
 synthetic_ds = load_dataset("nojedag/synthetic_financial_sentiment")
 synthetic_dataset = synthetic_ds.map(transform_labels, batched=True, remove_columns=['sentiment'])
 logger.log("Tokenizing synthetic data...", type="INFO")
-tokenized_synthetic = synthetic_dataset.map(lambda ex: tokenize_data(ex, tokenizer), batched=True, remove_columns=['sentence', 'lang'])
+tokenized_synthetic = synthetic_dataset.map(lambda ex: tokenize_data(tokenizer, ex), batched=True, remove_columns=['sentence', 'lang'])
 tokenized_synthetic.set_format(type="torch", columns=["input_ids", "attention_mask", "labels"])
 synthetic_loader = DataLoader(tokenized_synthetic['train'], batch_size=BATCH_SIZE) # Assuming 'train' split
 logger.log("Evaluating student model on synthetic data...", type="INFO")

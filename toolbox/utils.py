@@ -25,6 +25,10 @@ def compute_metrics(eval_pred):
     f1 = load_f1.compute(predictions=predictions, references=labels, average="weighted")
     return {"accuracy": accuracy, "f1score": f1}
 
+def tokenize_data(tokenizer, example):
+    """Tokenize a data example using the provided tokenizer."""
+    return tokenizer(example['sentence'], padding='max_length', truncation=True)
+
 def get_output_dir(model_name):
     return f'.././models/{model_name}'
 

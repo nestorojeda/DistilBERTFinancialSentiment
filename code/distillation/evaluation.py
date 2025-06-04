@@ -1,14 +1,5 @@
 import torch
-import evaluate
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-
-metric = evaluate.load("accuracy")
-
-def compute_metrics(eval_pred):
-    """Computes accuracy metric for trainer evaluation."""
-    logits, labels = eval_pred
-    predictions = torch.argmax(torch.tensor(logits), dim=1).numpy()
-    return metric.compute(predictions=predictions, references=labels)
 
 def evaluate(model, dataloader, device):
     """Evaluates a model on a given dataloader.

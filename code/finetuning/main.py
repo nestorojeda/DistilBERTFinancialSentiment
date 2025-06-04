@@ -10,7 +10,6 @@ import os
 import argparse
 import torch
 import wandb
-import evaluate
 from datasets import load_dataset
 from transformers import (
     AutoTokenizer,
@@ -27,7 +26,12 @@ if module_path not in sys.path:
     sys.path.append(module_path)
     print(f"Added {module_path} to sys.path")
 
-from toolbox.utils import get_output_dir
+from toolbox.utils import (
+    get_output_dir,
+    transform_labels,
+    tokenize_data,
+    compute_metrics,
+)
 from toolbox.logger import Logger
 
 
@@ -60,48 +64,6 @@ class CustomTrainer(Trainer):
         return (loss, outputs) if return_outputs else loss
 
 
-def transform_labels(examples):
-    """Transform string sentiment labels to integer labels.
-    
-    Args:
-        examples: Dictionary containing sentiment labels
-        
-    Returns:
-        Dictionary with added 'labels' key containing integer labels
-    """
-    label_map = {"negative": 0, "neutral": 1, "positive": 2}
-    if isinstance(examples['sentiment'], list):
-        examples['labels'] = [label_map[s.lower()] for s in examples['sentiment']]
-    else:
-        examples['labels'] = label_map[examples['sentiment'].lower()]
-    return examples
-
-
-def tokenize_data(tokenizer, example):
-    """Tokenize the input text data.
-    
-    Args:
-        tokenizer: HuggingFace tokenizer instance
-        example: Dictionary containing 'sentence' key
-        
-    Returns:
-        Tokenized examples
-    """
-    return tokenizer(example['sentence'], padding='max_length', truncation=True)
-
-
-def compute_metrics(eval_pred):
-    """Compute evaluation metrics.
-    
-    Args:
-        eval_pred: Tuple of predictions and labels
-        
-    Returns:
-        Dictionary of metric scores
-    """
-    logits, labels = eval_pred
-    predictions = torch.argmax(torch.tensor(logits), dim=1).numpy()
-    return metric.compute(predictions=predictions, references=labels)
 
 
 def setup_model_and_tokenizer(model_name_or_path, num_labels=3):
@@ -354,10 +316,6 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logger.log(f"Using device: {device}", type="INFO")
     
-    # Load metric
-    global metric
-    metric = evaluate.load("accuracy")
-    logger.log("Loaded accuracy metric", type="INFO")
     
     # Set up model and tokenizer
     logger.start_timer("model_setup")

@@ -10,7 +10,7 @@ from transformers import (
 )
 from datasets import DatasetDict
 from data_manager import get_tokenized_lang_dataset # Import from the new module
-from evaluation import compute_metrics # Import from the new module
+from toolbox.utils import compute_metrics
 from transformers import EarlyStoppingCallback
 from collections import Counter
 
